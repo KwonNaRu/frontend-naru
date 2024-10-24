@@ -1,0 +1,46 @@
+@mixin default-fill-btn($bg-color, $text-color) {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: $text-color;
+    background-color: $bg-color;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        transform: scale(1.02); // 포커스 시 약간 확대
+    }
+}
+
+@mixin default-btn($border-color, $text-color) {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: $text-color;
+    text-decoration: none;
+    background-color: $border-color;
+    border-radius: 5px;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+        box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+        transform: scale(1.02); // 포커스 시 약간 확대
+    }
+}
+
+// 믹스인 정의: 버튼 호버 효과
+@mixin button-hover($color) {
+    &:hover {
+        background-color: darken($color, 10%);
+        transform: scale(1.02);
+    }
+    &:active {
+        transform: scale(0.98);
+    }
+    &:focus {
+        outline: none; /* 기본 아웃라인 제거 */
+        box-shadow: 0 0 0 2px darken($color, 8%); /* 부드러운 그림자 */
+    }
+}

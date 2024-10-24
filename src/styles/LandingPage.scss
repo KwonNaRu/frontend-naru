@@ -1,86 +1,90 @@
+@use "./abstracts" as *;
+@use "./components";
+
 // 변수 정의
-$primary-color: #007bff;
-$secondary-color: #0056b3;
-$text-color: #333;
-$background-color: #f8f9fa;
-$footer-background: #333;
-$footer-text-color: #fff;
+$primary-color: $dusty-rose;
+$secondary-color: $deep-pink;
+$text-color: $gray;
+$background-color: $beige;
+$footer-background: $light-gray;
+$footer-text-color: $charcoal;
 
 .landing-container {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  color: $text-color;
-  background: $background-color;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: $text-color;
+    background: $background-color;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .landing-header {
-  background: $primary-color;
-  color: white;
-  padding: 50px 20px;
-  border-bottom: 5px solid $secondary-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: transparent;
+    color: $text-color;
+    padding: 30px 20px;
 
-  h1 {
-    margin: 0;
-    font-size: 2.5em;
-  }
-
-  p {
-    font-size: 1.2em;
-    margin: 10px 0;
-  }
-}
-
-.btn-primary {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 1em;
-  color: white;
-  background-color: $secondary-color;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: darken($secondary-color, 10%);
-  }
-}
-
-.landing-features {
-  display: flex;
-  justify-content: space-around;
-  padding: 40px 20px;
-  background: #ffffff;
-  border-top: 1px solid #ddd;
-
-  .feature {
-    flex: 1;
-    max-width: 300px;
-    margin: 20px;
-
-    h2 {
-      font-size: 1.5em;
+    h1 {
+        font-size: 2.5em;
+        margin: 0;
     }
 
     p {
-      font-size: 1em;
-      color: #666;
+        font-size: 1.2em;
+        margin: 10px 0;
     }
-  }
+
+    &-btn-wrapper {
+        display: inline-flex;
+        gap: 1rem;
+    }
+}
+
+.btn-primary {
+    @include default-fill-btn($secondary-color, white);
+}
+
+.btn-secondary {
+    @include default-btn($primary-color, white);
+}
+
+.landing-features {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 20px;
+    background: #ffffff;
+    border-top: 1px solid #ddd;
+
+    .feature {
+        flex: 1;
+        max-width: 300px;
+        margin: 20px;
+
+        h2 {
+            font-size: 1.5em;
+        }
+
+        p {
+            font-size: 1em;
+            color: #666;
+        }
+    }
 }
 
 .landing-footer {
-  background: $footer-background;
-  color: $footer-text-color;
-  padding: 20px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid darken($footer-background, 10%);
+    background: $footer-background;
+    color: $footer-text-color;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 1px solid darken($footer-background, 10%);
 
-  p {
-    margin: 0;
-  }
+    p {
+        margin: 0;
+    }
 }
