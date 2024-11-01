@@ -41,6 +41,6 @@
     }
     &:focus {
         outline: none; /* 기본 아웃라인 제거 */
-        box-shadow: 0 0 0 2px darken($color, 8%); /* 부드러운 그림자 */
+        box-shadow: 0 0 0 2px darken($color, 30%); /* 부드러운 그림자 */
     }
 }
