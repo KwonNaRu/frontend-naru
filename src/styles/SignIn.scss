@@ -1,17 +1,17 @@
-// src/components/SignUp.scss
+// src/components/Login.scss
 
 @use "./abstracts" as *;
 @use "./components/form" as form;
 
-.signup {
-    // 변수 정의
-    $primary-color: $light-pink;
-    $secondary-color: $pastel-pink;
+.signin {
+    $primary-color: $dark-beige;
+    $secondary-color: $wheat;
     $error-color: $deep-pink;
     $background-color: $silver;
     $form-background: #ffffff;
     $input-border: $silver;
     $input-focus-border: $charcoal;
 
+    // 폼 스타일
     @include form.form-style($primary-color, $secondary-color, $error-color, $background-color, $form-background, $input-border, $input-focus-border);
 }

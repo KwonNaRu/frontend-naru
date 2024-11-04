@@ -53,9 +53,9 @@ const SignUp: React.FC = () => {
     );
 
     return (
-        <div className="signup-container">
+        <div className="signup sign-form-container">
             {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
-            <form className="signup-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
                 <h2>Sign Up</h2>
 
                 {/* 사용자 이름 입력 필드 */}
