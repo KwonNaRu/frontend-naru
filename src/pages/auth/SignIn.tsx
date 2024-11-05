@@ -6,11 +6,19 @@ import axios from "../../configs/axiosConfig"; // 설정한 Axios 인스턴스 �
 import { useDispatch } from "react-redux";
 import { login } from "../../store/auth/authSlice"; // login action 가져오기
 import "../../styles/SignIn.scss";
+import { decodeToken } from "react-jwt";
 
 // 로그인 폼에 입력될 데이터의 타입 정의
 interface LoginFormInputs {
     email: string;
     password: string;
+}
+
+interface DecodedJwtToken {
+    sub: string;
+    exp: number;
+    iat: number;
+    email: string;
 }
 
 const Login: React.FC = () => {
@@ -31,6 +39,17 @@ const Login: React.FC = () => {
             // 서버에 로그인 정보 전송
             const response = await axios.post("/auth/login", data);
             console.log(response.data); // 서버 응답 로그
+            const token = response.data;
+            localStorage.setItem("token", token);
+
+            const decodedToken = decodeToken(token) as DecodedJwtToken;
+
+            console.log(decodedToken);
+            // 필요한 정보 추출
+            const username = decodedToken.sub;
+            const email = decodedToken.email;
+
+            console.log(username, email);
 
             // 로그인 성공 시 Redux 상태 업데이트
             dispatch(login({ username: "User", email: data.email }));
