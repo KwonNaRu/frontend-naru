@@ -38,5 +38,8 @@ const store = configureStore({
 // - 이를 통해 상태의 저장과 복원을 관리
 const persistor = persistStore(store);
 
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 // store와 persistor를 내보내서 다른 파일에서 사용할 수 있게 함
 export { store, persistor };
