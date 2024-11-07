@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <div className={styles["landing-container"]}>
             <header className={styles["landing-header"]}>
-                <Logo />
+                <Logo width={250} height={250} />
                 <h1>Welcome to Naru&apos;s blog</h1>
                 <div className={styles["landing-header-btn-wrapper"]}>
                     <Link href="/signup" className={styles["btn-primary"]}>
