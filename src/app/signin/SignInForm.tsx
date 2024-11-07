@@ -5,9 +5,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/validationSchemas"; // 로그인용 유효성 검사 스키마
-import axios from "../../configs/axiosConfig"; // 설정한 Axios 인스턴스 임포트
+import axios from "@/configs/axiosConfig"; // 설정한 Axios 인스턴스 임포트
 import { useDispatch } from "react-redux";
-import { login } from "../../store/auth/authSlice"; // login action 가져오기
+import { login } from "@/store/auth/authSlice"; // login action 가져오기
 import styles from "./signin.module.scss";
 import { decodeToken } from "react-jwt";
 
@@ -55,7 +55,7 @@ const SignInForm: React.FC = () => {
             console.log(username, email);
 
             // 로그인 성공 시 Redux 상태 업데이트
-            dispatch(login({ username: "User", email: data.email }));
+            dispatch(login({ username, email }));
         } catch (error) {
             console.error(error); // 에러 발생 시 로그
         }
