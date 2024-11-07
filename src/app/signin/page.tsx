@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -5,7 +7,7 @@ import { loginSchema } from "../../validationSchemas"; // 로그인용 유효성
 import axios from "../../configs/axiosConfig"; // 설정한 Axios 인스턴스 임포트
 import { useDispatch } from "react-redux";
 import { login } from "../../store/auth/authSlice"; // login action 가져오기
-import "../../styles/SignIn.scss";
+import styles from "./signin.module.scss";
 import { decodeToken } from "react-jwt";
 
 // 로그인 폼에 입력될 데이터의 타입 정의
@@ -59,26 +61,26 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="signin sign-form-container">
-            <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
+        <div className={`${styles.signin} ${styles["sign-form-container"]}`}>
+            <form className={styles["sign-form"]} onSubmit={handleSubmit(onSubmit)}>
                 <h2>Login</h2>
 
                 {/* 이메일 입력 필드 */}
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                     <label htmlFor="email">Email</label>
-                    <input id="email" {...register("email")} className={`input ${errors.email ? "input-error" : ""}`} placeholder="Enter your email" />
-                    {errors.email && <p className="error-message">{errors.email.message}</p>}
+                    <input id="email" {...register("email")} className={`${styles.input} ${errors.email ? `${styles["input-error"]}` : ""}`} placeholder="Enter your email" />
+                    {errors.email && <p className={styles["error-message"]}>{errors.email.message}</p>}
                 </div>
 
                 {/* 비밀번호 입력 필드 */}
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="password" {...register("password")} className={`input ${errors.password ? "input-error" : ""}`} placeholder="Enter your password" />
-                    {errors.password && <p className="error-message">{errors.password.message}</p>}
+                    <input id="password" type="password" {...register("password")} className={`${styles.input} ${errors.password ? `${styles["input-error"]}` : ""}`} placeholder="Enter your password" />
+                    {errors.password && <p className={styles["error-message"]}>{errors.password.message}</p>}
                 </div>
 
                 {/* 제출 버튼 */}
-                <button type="submit" className="btn-submit">
+                <button type="submit" className={styles["btn-submit"]}>
                     Login
                 </button>
             </form>

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form"; // react-hook-form을 사용하여 폼 데이터를 쉽게 관리
 import { yupResolver } from "@hookform/resolvers/yup"; // react-hook-form과 yup을 연결
@@ -5,7 +7,7 @@ import { signupSchema } from "../../validationSchemas"; // yup으로 만든 유�
 import axios from "../../configs/axiosConfig"; // 서버와의 HTTP 요청을 위한 라이브러리
 import { useDispatch } from "react-redux";
 import { login } from "../../store/auth/authSlice"; // login action 가져오기
-import "../../styles/SignUp.scss";
+import styles from "./signup.module.scss";
 import Alert from "../../components/Alert";
 
 // 회원가입 폼에 입력될 데이터의 타입 정의
@@ -53,34 +55,34 @@ const SignUp: React.FC = () => {
     );
 
     return (
-        <div className="signup sign-form-container">
+        <div className={`${styles.signup} ${styles["sign-form-container"]}`}>
             {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
-            <form className="sign-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className={styles["sign-form"]} onSubmit={handleSubmit(onSubmit)}>
                 <h2>Sign Up</h2>
 
                 {/* 사용자 이름 입력 필드 */}
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                     <label htmlFor="username">Username</label>
-                    <input id="username" {...register("username")} className={`input ${errors.username ? "input-error" : ""}`} placeholder="Enter your username" />
-                    {errors.username && <p className="error-message">{errors.username.message}</p>}
+                    <input id="username" {...register("username")} className={`${styles.input} ${errors.username ? `${styles["input-error"]}` : ""}`} placeholder="Enter your username" />
+                    {errors.username && <p className={styles["error-message"]}>{errors.username.message}</p>}
                 </div>
 
                 {/* 이메일 입력 필드 */}
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                     <label htmlFor="email">Email</label>
-                    <input id="email" {...register("email")} className={`input ${errors.email ? "input-error" : ""}`} placeholder="Enter your email" />
-                    {errors.email && <p className="error-message">{errors.email.message}</p>}
+                    <input id="email" {...register("email")} className={`${styles.input} ${errors.email ? `${styles["input-error"]}` : ""}`} placeholder="Enter your email" />
+                    {errors.email && <p className={styles["error-message"]}>{errors.email.message}</p>}
                 </div>
 
                 {/* 비밀번호 입력 필드 */}
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                     <label htmlFor="password">Password</label>
-                    <input id="password" type="password" {...register("password")} className={`input ${errors.password ? "input-error" : ""}`} placeholder="Enter your password" />
-                    {errors.password && <p className="error-message">{errors.password.message}</p>}
+                    <input id="password" type="password" {...register("password")} className={`${styles.input} ${errors.password ? `${styles["input-error"]}` : ""}`} placeholder="Enter your password" />
+                    {errors.password && <p className={styles["error-message"]}>{errors.password.message}</p>}
                 </div>
 
                 {/* 제출 버튼 */}
-                <button type="submit" className="btn-submit">
+                <button type="submit" className={styles["btn-submit"]}>
                     Sign Up
                 </button>
             </form>

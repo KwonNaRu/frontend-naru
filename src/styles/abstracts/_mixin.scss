@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @mixin default-fill-btn($bg-color, $text-color) {
     display: inline-block;
     padding: 10px 20px;
@@ -33,7 +35,7 @@
 // 믹스인 정의: 버튼 호버 효과
 @mixin button-hover($color) {
     &:hover {
-        background-color: darken($color, 10%);
+        background-color: color.scale($color, $lightness: -10%);
         transform: scale(1.02);
     }
     &:active {
@@ -41,6 +43,6 @@
     }
     &:focus {
         outline: none; /* 기본 아웃라인 제거 */
-        box-shadow: 0 0 0 2px darken($color, 30%); /* 부드러운 그림자 */
+        box-shadow: 0 0 0 2px color.scale($color, $lightness: -30%); /* 부드러운 그림자 */
     }
 }

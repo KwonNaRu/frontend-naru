@@ -1,5 +1,6 @@
-@use "./abstracts" as *;
-@use "./components";
+@use "@/styles/abstracts" as *;
+// @use "@/styles/components";
+@use "sass:color";
 
 // 변수 정의
 $primary-color: $dusty-rose;
@@ -82,7 +83,7 @@ $footer-text-color: $charcoal;
     position: fixed;
     bottom: 0;
     width: 100%;
-    border-top: 1px solid darken($footer-background, 10%);
+    border-top: 1px solid color.scale($footer-background, $lightness: -10%);
 
     p {
         margin: 0;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./../styles/components/_alert.scss";
+import styles from "@/styles/components/Alert.module.scss";
 
 interface AlertProps {
     message: string;
@@ -25,7 +25,7 @@ const Alert: React.FC<AlertProps> = ({ message, type = "error", onClose }) => {
     }, [isHovered, onClose]);
 
     return (
-        <div className={`alert-message ${type}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        <div className={`${styles["alert-message"]} ${styles[type]}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             {message}
         </div>
     );
