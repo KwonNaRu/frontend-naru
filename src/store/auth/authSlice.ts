@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import Cookies from "js-cookie";
 
 // 로그인, 회원가입 상태의 초기값 정의
 interface AuthState {
@@ -16,22 +17,23 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        login: (
+        signIn: (
             state,
             action: PayloadAction<{ username: string; email: string }>
         ) => {
             state.isAuthenticated = true // 사용자가 로그인했음을 표시
             state.user = action.payload // 사용자 정보 저장
         },
-        logout: (state) => {
+        signOut: (state) => {
             state.isAuthenticated = false // 로그아웃 처리
             state.user = null // 사용자 정보 초기화
+            Cookies.remove('NID_AUTH')
         },
     },
 })
 
 // action을 내보내서 나중에 로그인/로그아웃 처리 시 사용
-export const { login, logout } = authSlice.actions
+export const { signIn, signOut } = authSlice.actions
 
 // reducer 내보내기
 export default authSlice.reducer

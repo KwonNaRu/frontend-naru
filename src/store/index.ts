@@ -29,7 +29,7 @@ const store = configureStore({
                 // Redux Persist 관련 액션들을 직렬화 검사에서 제외
                 // - persist/PERSIST: 상태 유지를 시작할 때 발생하는 액션
                 // - persist/REHYDRATE: 저장된 상태를 복원할 때 발생하는 액션
-                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
+                ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/PURGE'],
             },
         }),
 });
