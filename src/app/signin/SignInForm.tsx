@@ -56,30 +56,28 @@ const SignInForm: React.FC = () => {
     };
 
     return (
-        <>
-            <form className={styles["sign-form"]} onSubmit={handleSubmit(onSubmit)}>
-                <h2>Login</h2>
+        <form className={styles["sign-form"]} onSubmit={handleSubmit(onSubmit)}>
+            <h2>Login</h2>
 
-                {/* 이메일 입력 필드 */}
-                <div className={styles["form-group"]}>
-                    <label htmlFor="email">Email</label>
-                    <input id="email" {...register("email")} className={`${styles.input} ${errors.email ? `${styles["input-error"]}` : ""}`} placeholder="Enter your email" />
-                    {errors.email && <p className={styles["error-message"]}>{errors.email.message}</p>}
-                </div>
+            {/* 이메일 입력 필드 */}
+            <div className={styles["form-group"]}>
+                <label htmlFor="email">Email</label>
+                <input id="email" {...register("email")} className={`${styles.input} ${errors.email ? `${styles["input-error"]}` : ""}`} placeholder="Enter your email" />
+                {errors.email && <p className={styles["error-message"]}>{errors.email.message}</p>}
+            </div>
 
-                {/* 비밀번호 입력 필드 */}
-                <div className={styles["form-group"]}>
-                    <label htmlFor="password">Password</label>
-                    <input id="password" type="password" {...register("password")} className={`${styles.input} ${errors.password ? `${styles["input-error"]}` : ""}`} placeholder="Enter your password" />
-                    {errors.password && <p className={styles["error-message"]}>{errors.password.message}</p>}
-                </div>
+            {/* 비밀번호 입력 필드 */}
+            <div className={styles["form-group"]}>
+                <label htmlFor="password">Password</label>
+                <input id="password" type="password" {...register("password")} className={`${styles.input} ${errors.password ? `${styles["input-error"]}` : ""}`} placeholder="Enter your password" />
+                {errors.password && <p className={styles["error-message"]}>{errors.password.message}</p>}
+            </div>
 
-                {/* 제출 버튼 */}
-                <button type="submit" className={styles["btn-submit"]}>
-                    Login
-                </button>
-            </form>
-        </>
+            {/* 제출 버튼 */}
+            <button type="submit" className={styles["btn-submit"]}>
+                Login
+            </button>
+        </form>
     );
 };
 

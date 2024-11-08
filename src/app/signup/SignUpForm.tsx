@@ -1,15 +1,14 @@
 // components/SignUpForm.tsx
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "@/validationSchemas";
 import axios from "@/configs/axiosConfig";
-import { useDispatch } from "react-redux";
-import { login } from "@/store/auth/authSlice";
 import styles from "./signup.module.scss";
 import Alert from "@/components/Alert";
+import { useRouter } from "next/navigation";
 
 interface SignUpFormInputs {
     username: string;
@@ -28,24 +27,22 @@ const SignUpForm: React.FC = () => {
 
     const [errorMessage, setErrorMessage] = useState("");
     const [showError, setShowError] = useState(false);
-    const dispatch = useDispatch();
 
-    const onSubmit = useCallback(
-        async (data: SignUpFormInputs) => {
-            try {
-                setErrorMessage("");
-                setShowError(false);
-                const response = await axios.post("/auth/register", data);
-                console.log(response.data); // 서버 응답 로그
-                dispatch(login({ username: data.username, email: data.email }));
-            } catch (error) {
-                setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
-                setShowError(true);
-                console.error(error);
-            }
-        },
-        [dispatch]
-    );
+    const router = useRouter();
+
+    const onSubmit = async (data: SignUpFormInputs) => {
+        try {
+            setErrorMessage("");
+            setShowError(false);
+            const response = await axios.post("/auth/register", data);
+            console.log(response.data); // 서버 응답 로그
+            router.push("/signin");
+        } catch (error) {
+            setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
+            setShowError(true);
+            console.error(error);
+        }
+    };
 
     return (
         <>
