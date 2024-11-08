@@ -2,10 +2,17 @@
 
 import styles from "@/styles/components/Header.module.scss";
 import Link from "next/link";
-import { useAppSelector } from "./../store/hooks";
+import { useAppDispatch, useAppSelector } from "./../store/hooks";
+import { signOut } from "@/store/auth/authSlice";
 
 const Header: React.FC = () => {
+    const dispatch = useAppDispatch();
     const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+
+    function onSignOut() {
+        dispatch(signOut());
+    }
+
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
@@ -17,7 +24,9 @@ const Header: React.FC = () => {
                         <>
                             <li>{user?.username}</li>
                             <li>
-                                <button className={styles["btn-primary"]}>Sign Out</button>
+                                <button type="button" className={styles["btn-primary"]} onClick={onSignOut}>
+                                    Sign Out
+                                </button>
                             </li>
                         </>
                     ) : (

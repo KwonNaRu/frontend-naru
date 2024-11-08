@@ -7,21 +7,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/validationSchemas"; // 로그인용 유효성 검사 스키마
 import axios from "@/configs/axiosConfig"; // 설정한 Axios 인스턴스 임포트
 import { useDispatch } from "react-redux";
-import { login } from "@/store/auth/authSlice"; // login action 가져오기
+import { signIn } from "@/store/auth/authSlice"; // login action 가져오기
 import styles from "./signin.module.scss";
 import { decodeToken } from "react-jwt";
+import Cookies from "js-cookie";
 
 // 로그인 폼에 입력될 데이터의 타입 정의
 interface LoginFormInputs {
     email: string;
     password: string;
-}
-
-interface DecodedJwtToken {
-    sub: string;
-    exp: number;
-    iat: number;
-    email: string;
 }
 
 const SignInForm: React.FC = () => {
@@ -43,19 +37,19 @@ const SignInForm: React.FC = () => {
             const response = await axios.post("/auth/login", data);
             console.log(response.data); // 서버 응답 로그
             const token = response.data;
-            localStorage.setItem("token", token);
 
-            const decodedToken = decodeToken(token) as DecodedJwtToken;
+            const decodedToken = decodeToken(token) as GlobalDecodedJwtToken;
 
             console.log(decodedToken);
             // 필요한 정보 추출
             const username = decodedToken.sub;
             const email = decodedToken.email;
+            const exp = decodedToken.exp * 1000;
 
-            console.log(username, email);
+            Cookies.set("NID_AUTH", token, { expires: exp });
 
             // 로그인 성공 시 Redux 상태 업데이트
-            dispatch(login({ username, email }));
+            dispatch(signIn({ username, email }));
         } catch (error) {
             console.error(error); // 에러 발생 시 로그
         }
