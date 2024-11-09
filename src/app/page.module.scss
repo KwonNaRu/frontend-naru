@@ -80,8 +80,6 @@ $footer-text-color: $charcoal;
     background: $footer-background;
     color: $footer-text-color;
     padding: 20px;
-    position: fixed;
-    bottom: 0;
     width: 100%;
     border-top: 1px solid color.scale($footer-background, $lightness: -10%);
 

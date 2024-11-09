@@ -1,21 +1,14 @@
 import Logo from "@/components/Logo";
 import styles from "./page.module.scss";
-import Link from "next/link";
+import Header from "@/components/Header";
 
 export default function Home() {
     return (
         <div className={styles["landing-container"]}>
+            <Header />
             <header className={styles["landing-header"]}>
                 <Logo width={250} height={250} />
                 <h1>Welcome to Naru&apos;s blog</h1>
-                <div className={styles["landing-header-btn-wrapper"]}>
-                    <Link href="/signup" className={styles["btn-primary"]}>
-                        Sign Up
-                    </Link>
-                    <Link href="/signin" className={styles["btn-secondary"]}>
-                        Sign In
-                    </Link>
-                </div>
             </header>
             <section className={styles["landing-features"]}>
                 <div className={styles["feature"]}>
