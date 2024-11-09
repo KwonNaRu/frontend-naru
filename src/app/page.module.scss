@@ -45,14 +45,6 @@ $footer-text-color: $charcoal;
     }
 }
 
-.btn-primary {
-    @include default-fill-btn($secondary-color, white);
-}
-
-.btn-secondary {
-    @include default-btn($primary-color, white);
-}
-
 .landing-features {
     display: flex;
     justify-content: space-around;

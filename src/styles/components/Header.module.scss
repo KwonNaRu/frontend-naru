@@ -1,4 +1,9 @@
 // styles/Header.module.scss
+@use "@/styles/abstracts" as *;
+
+$primary-color: $pastel-pink;
+$secondary-color: $coral-pink;
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -33,6 +38,10 @@
     transition: color 0.3s;
 }
 
-.nav a:hover {
-    color: #f0a500;
+.btn-primary {
+    @include default-fill-btn($secondary-color, white);
+}
+
+.btn-secondary {
+    @include default-btn($primary-color, white);
 }
