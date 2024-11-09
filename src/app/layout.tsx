@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import Provider from "@/components/Provider";
+import localFont from "next/font/local";
+
+const bmjua = localFont({
+    src: "./fonts/BMJUA_ttf.ttf", // 폰트 파일의 경로
+    variable: "--font-bm",
+});
 
 export const metadata: Metadata = {
     title: "Naru's blog",
@@ -21,7 +27,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={bmjua.variable}>
             <body>
                 <Provider>{children}</Provider>
             </body>

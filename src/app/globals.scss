@@ -1,7 +1,14 @@
 // 글로벌 변수
-$font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+// $font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 $container-max-width: 1200px; // 최대 너비 설정
 $container-padding: 20px; // 좌우 패딩 설정
+
+@font-face {
+    font-family: var(--font-bm);
+    src: url("../app/fonts/BMJUA_ttf.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
 
 // 글로벌 Box-sizing 설정
 *,
@@ -13,7 +20,7 @@ $container-padding: 20px; // 좌우 패딩 설정
 body {
     margin: 0;
     padding: 0;
-    font-family: $font-family;
+    font-family: "BMJUA", sans-serif;
     background-color: #f0f2f5;
 }
 
