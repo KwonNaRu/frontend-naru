@@ -3,6 +3,12 @@ export interface DecodedJwtToken {
     exp: number;
     iat: number;
     email: string;
+    role: string;
+}
+
+export interface User {
+    username: string;
+    email: string;
 }
 
 // 조건부 타입
