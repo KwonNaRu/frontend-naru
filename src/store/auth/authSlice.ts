@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 // 로그인, 회원가입 상태의 초기값 정의
 interface AuthState {
     isAuthenticated: boolean
-    user: { username: string; email: string } | null
+    user: { username: string; email: string; role: string } | null
 }
 
 const initialState: AuthState = {
@@ -19,7 +19,7 @@ const authSlice = createSlice({
     reducers: {
         signIn: (
             state,
-            action: PayloadAction<{ username: string; email: string }>
+            action: PayloadAction<{ username: string; email: string; role: string }>
         ) => {
             state.isAuthenticated = true // 사용자가 로그인했음을 표시
             state.user = action.payload // 사용자 정보 저장

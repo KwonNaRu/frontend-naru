@@ -15,14 +15,14 @@ export default function AuthChecker() {
         if (nidAuthCookie) {
             const decodedToken = decodeToken(nidAuthCookie) as GlobalDecodedJwtToken;
 
-            console.log(decodedToken);
             // 필요한 정보 추출
             const username = decodedToken.sub;
             const email = decodedToken.email;
+            const role = decodedToken.role;
 
             // 쿠키 존재 시 인증 상태로 설정
             dispatch(
-                signIn({ username, email }) // 필요시 추가 사용자 정보
+                signIn({ username, email, role }) // 필요시 추가 사용자 정보
             );
         } else {
             // 쿠키 없을 경우 비인증 상태
