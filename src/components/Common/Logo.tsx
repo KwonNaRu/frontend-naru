@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import styles from "@/styles/components/Logo.module.scss";
+import styles from "./Logo.module.scss";
 
 export default function Logo({
     width,

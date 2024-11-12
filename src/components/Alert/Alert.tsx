@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "@/styles/components/Alert.module.scss";
+import styles from "./Alert.module.scss";
 
 interface AlertProps {
     message: string;
