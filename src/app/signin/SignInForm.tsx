@@ -11,7 +11,7 @@ import { signIn } from "@/store/auth/authSlice"; // login action 가져오기
 import styles from "./signin.module.scss";
 import { decodeToken } from "react-jwt";
 import Cookies from "js-cookie";
-import Alert from "@/components/Alert";
+import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
 
 // 로그인 폼에 입력될 데이터의 타입 정의

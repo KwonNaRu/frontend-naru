@@ -1,0 +1,21 @@
+// styles/components/Category.module.scss
+
+.carousel {
+    display: flex;
+    overflow-x: auto; /* 수평 스크롤을 가능하게 합니다. */
+    padding: 20px;
+    gap: 20px;
+
+    &::-webkit-scrollbar {
+        display: none; /* 스크롤바 숨기기 */
+    }
+}
+
+.categoryItem {
+    min-width: 200px; /* 각 카테고리 아이템의 최소 너비 */
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

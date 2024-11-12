@@ -1,5 +1,14 @@
 import { User } from '@/types'
 
+export interface CategoryType {
+    id: number;
+    name: string;
+}
+
+export interface CategoryProps {
+    category: CategoryType;
+}
+
 export interface PostProps {
     post: {
         postId: number;

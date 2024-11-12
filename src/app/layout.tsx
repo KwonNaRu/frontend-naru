@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.scss";
-import Provider from "@/components/Provider";
+import Provider from "@/components/Common/Provider";
 import localFont from "next/font/local";
 
 const bmjua = localFont({

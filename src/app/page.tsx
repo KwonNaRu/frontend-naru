@@ -1,6 +1,6 @@
-import Logo from "@/components/Logo";
+import Logo from "@/components/Common/Logo";
 import styles from "./page.module.scss";
-import Header from "@/components/Header";
+import Header from "@/components/Common/Header";
 
 export default function Home() {
     return (

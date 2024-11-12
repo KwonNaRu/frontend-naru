@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "@/validationSchemas";
 import axios from "@/configs/axiosConfig";
 import styles from "./signup.module.scss";
-import Alert from "@/components/Alert";
+import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
 
 interface SignUpFormInputs {
