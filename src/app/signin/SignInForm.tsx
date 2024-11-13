@@ -46,8 +46,8 @@ const SignInForm: React.FC = () => {
             const decodedToken = decodeToken(token) as GlobalDecodedJwtToken;
 
             // 필요한 정보 추출
-            const username = decodedToken.sub;
-            const email = decodedToken.email;
+            const email = decodedToken.sub;
+            const username = decodedToken.username;
             const exp = decodedToken.exp * 1000;
             const role = decodedToken.role;
 

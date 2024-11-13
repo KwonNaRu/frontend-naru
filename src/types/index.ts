@@ -2,7 +2,7 @@ export interface DecodedJwtToken {
     sub: string;
     exp: number;
     iat: number;
-    email: string;
+    username: string;
     role: string;
 }
 
