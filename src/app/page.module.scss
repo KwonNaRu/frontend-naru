@@ -19,7 +19,7 @@ $footer-text-color: $charcoal;
     padding: 0;
 }
 
-.landing-header {
+.landing-introduction {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,27 +44,13 @@ $footer-text-color: $charcoal;
     }
 }
 
-.landing-features {
+.landing-main {
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
-    padding: 40px 20px;
+    padding: 20px;
     background: #ffffff;
     border-top: 1px solid #ddd;
-
-    .feature {
-        flex: 1;
-        max-width: 300px;
-        margin: 20px;
-
-        h2 {
-            font-size: 1.5em;
-        }
-
-        p {
-            font-size: 1em;
-            color: #666;
-        }
-    }
 }
 
 .landing-footer {
