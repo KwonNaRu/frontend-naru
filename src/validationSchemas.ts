@@ -10,3 +10,7 @@ export const loginSchema = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup.string().required("Password is required")
 })
+
+export const categorySchema = yup.object().shape({
+    title: yup.string().required("title is required")
+})

@@ -1,8 +1,13 @@
 import { User } from '@/types'
 
+export interface CategoryFormInputs {
+    title: string;
+}
+
 export interface CategoryType {
-    id: number;
-    name: string;
+    id: number | null;
+    name: string | null;
+    posts: PostProps[];
 }
 
 export interface CategoryProps {
@@ -10,13 +15,11 @@ export interface CategoryProps {
 }
 
 export interface PostProps {
-    post: {
-        postId: number;
-        user: User;
-        title: string;
-        content: string;
-        comments: CommentProps[]; // CommentProps 타입으로 지정
-    };
+    postId: number;
+    user: User;
+    title: string;
+    content: string;
+    comments: CommentProps[]; // CommentProps 타입으로 지정
 }
 
 export interface CommentProps {

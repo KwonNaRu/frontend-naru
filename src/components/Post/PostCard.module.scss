@@ -1,0 +1,69 @@
+/* Post.module.scss */
+@use "@/styles/abstracts" as *;
+
+.postCard {
+    border: solid 3px $peach-pink;
+    padding: 20px;
+    background-color: $wheat;
+    border-radius: 5px;
+    block-size: 100%;
+    user-select: none; /* 사용자가 요소를 선택할 수 없도록 설정 */
+}
+
+.postCardTitle {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.postCardAuthor {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.editButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.editButton:hover {
+    background-color: #0056b3;
+}
+
+.editingArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+    }
+}
+
+.saveButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.saveButton:hover {
+    background-color: #218838;
+}

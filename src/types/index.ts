@@ -9,6 +9,7 @@ export interface DecodedJwtToken {
 export interface User {
     username: string;
     email: string;
+    role: string
 }
 
 // 조건부 타입

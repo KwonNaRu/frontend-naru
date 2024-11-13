@@ -1,14 +1,27 @@
 // components/Category.tsx
 
 import React from "react";
-import styles from "@/styles/components/Category.module.scss";
+import styles from "./Category.module.scss";
 import { CategoryProps } from "@/types/post";
+import PostCard from "../Post/PostCard";
+import Carousel from "../Common/Carousel";
 
 const Category: React.FC<CategoryProps> = ({ category }) => {
     return (
         <li className={styles.categoryItem}>
-            <h3>{category.name}</h3>
-            {/* 여기에 카테고리에 대한 추가 정보를 표시할 수 있습니다. */}
+            <div className={styles.categoryTitleWrapper}>
+                <h3>{category.name}</h3>{" "}
+                <button type="button" className="">
+                    수정하기
+                </button>
+            </div>
+            <ul>
+                <Carousel
+                    slides={category.posts.map((post) => (
+                        <PostCard key={post.postId} {...post} /> // Post 컴포넌트 반복 렌더링
+                    ))}
+                />
+            </ul>
         </li>
     );
 };

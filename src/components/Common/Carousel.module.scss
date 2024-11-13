@@ -1,0 +1,29 @@
+/* Carousel.module.css */
+.carousel {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    overflow: hidden;
+    border: 2px solid #ccc;
+    cursor: grab;
+}
+.carouselTrack {
+    display: flex;
+    gap: 0.6rem;
+    margin: 0.5rem;
+    transition: none;
+    overflow-x: auto;
+    scroll-behavior: auto;
+}
+.carouselSlide {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+}
+.carouselSlide img,
+.carouselSlide div {
+    width: 100%;
+    display: block;
+}
+.carouselTrack::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for better UX */
+}
