@@ -12,5 +12,9 @@ export const loginSchema = yup.object().shape({
 })
 
 export const categorySchema = yup.object().shape({
-    title: yup.string().required("title is required")
+    name: yup.string().required("title is required")
+})
+
+export const postSchema = yup.object().shape({
+    name: yup.string().required("title is required")
 })

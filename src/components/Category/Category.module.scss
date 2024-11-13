@@ -1,9 +1,17 @@
 // styles/components/Category.module.scss
 @use "@/styles/abstracts" as *;
 
-.add-btn {
-    align-self: flex-start;
-    @include default-fill-btn($soft-pink, white);
+.category-list-btn-container {
+    display: flex;
+    justify-content: space-between;
+
+    .category-add-btn {
+        @include default-fill-btn($soft-pink, white);
+    }
+
+    .post-add-btn {
+        @include default-fill-btn($crimson-pink, white);
+    }
 }
 
 .category-list {

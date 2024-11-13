@@ -33,6 +33,7 @@ const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
             setShowError(false);
             const response = await axios.post("/categories", data);
             console.log(response.data); // 서버 응답 로그
+            onClose();
         } catch (error) {
             setErrorMessage("카테고리 생성에 실패했습니다. 다시 시도해 주세요.");
             setShowError(true);
@@ -42,7 +43,7 @@ const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
 
     useEffect(() => {
         reset({
-            title: "",
+            name: "",
         });
     }, [onClose, reset]);
 
@@ -50,8 +51,8 @@ const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
         <>
             {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" id="title" {...register("title")} className={styles["category-title__input"]} />
-                {errors.title && <p className={styles["error-message"]}>{errors.title.message}</p>}
+                <input type="text" id="name" {...register("name")} className={styles["category-name__input"]} />
+                {errors.name && <p className={styles["error-message"]}>{errors.name.message}</p>}
                 <button type="submit">생성하기</button>
             </form>
         </>
