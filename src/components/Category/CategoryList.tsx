@@ -1,11 +1,14 @@
 // components/CategoryList.tsx
 "use client";
+
 import React, { useState } from "react";
 import styles from "./Category.module.scss";
 import Category from "./Category";
 import { CategoryType } from "@/types/post";
 import Modal from "../Common/Modal";
 import CategoryEditor from "./CategoryEditor";
+import PostEditor from "../Post/PostEditor";
+import { useAppSelector } from "@/store/hooks";
 
 const CategoryList: React.FC = () => {
     const categories: CategoryType[] = [
@@ -45,22 +48,42 @@ const CategoryList: React.FC = () => {
         },
     ];
 
-    const [isModalOpen, setModalOpen] = useState(false);
+    const { user } = useAppSelector((state) => state.auth);
 
-    const handleOpenModal = () => {
-        setModalOpen(true);
+    const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
+    const [isPostModalOpen, setPostModalOpen] = useState(false);
+
+    const handleCategoryOpenModal = () => {
+        setCategoryModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
+    const handleCategoryCloseModal = () => {
+        setCategoryModalOpen(false);
+    };
+
+    const handlePostOpenModal = () => {
+        setPostModalOpen(true);
+    };
+
+    const handlePostCloseModal = () => {
+        setPostModalOpen(false);
     };
 
     return (
         <>
-            <Modal isOpen={isModalOpen} onClose={handleCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { title: "" }, onClose: () => setModalOpen(false) }} />
-            <button type="button" onClick={() => handleOpenModal()} className={styles["add-btn"]}>
-                카테고리 추가
-            </button>
+            <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
+            <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ postFormInputs: { title: "", content: "", category: 0 }, onClose: () => setPostModalOpen(false) }} />
+
+            {user?.role === "OWNER" ? (
+                <div className={styles["category-list-btn-container"]}>
+                    <button type="button" onClick={() => handleCategoryOpenModal()} className={styles["category-add-btn"]}>
+                        카테고리 추가
+                    </button>
+                    <button type="button" onClick={() => handlePostOpenModal()} className={styles["post-add-btn"]}>
+                        게시글 생성
+                    </button>
+                </div>
+            ) : null}
 
             <ul className={styles["category-list"]}>
                 {categories.map((category) => (
