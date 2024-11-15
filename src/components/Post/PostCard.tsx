@@ -1,43 +1,33 @@
 // components/Post.tsx
 
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { PostProps } from "@/types/post";
 import { useAppSelector } from "@/store/hooks";
 import styles from "./PostCard.module.scss";
+import { useMessage } from "../Common/ContextAPI";
 
-const PostCard: React.FC<PostProps> = ({ author, title }) => {
-    const [isEditing, setIsEditing] = useState(false);
-    // const [editedContent, setEditedContent] = useState(content);
+const PostCard: React.FC<PostProps> = ({ postId, author, title, content }) => {
+    const { user } = useAppSelector((state) => state.auth);
 
-    const { user: userState } = useAppSelector((state) => state.auth);
+    const { setMessage } = useMessage();
 
     const handleEdit = () => {
-        setIsEditing(true);
+        setMessage({
+            postId,
+            title,
+            author,
+            content,
+        });
     };
 
-    const isEditable = userState?.username === author;
+    const isEditable = useMemo(() => user?.username === author, [user, author]);
 
     return (
-        <div className={styles.postCard}>
+        <div className={styles.postCard} onClick={isEditable ? () => handleEdit() : undefined}>
             <h2 className={styles.postCardTitle}>{title}</h2>
             <p className={styles.postCardAuthor}>
                 <strong>작성자:</strong> {author}
             </p>
-            {/* {isEditing ? (
-                <div>
-                    <textarea value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-                    <button onClick={handleSave}>Save</button>
-                </div>
-            ) : (
-                <p>{content}</p>
-            )} */}
-            {isEditable && !isEditing && (
-                <button className={styles.editButton} onClick={handleEdit}>
-                    Edit
-                </button>
-            )}
-            {/* <h3>댓글</h3>
-            <CommentList comments={comments} /> */}
         </div>
     );
 };

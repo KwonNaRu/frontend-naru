@@ -1,27 +1,21 @@
 // components/CategoryList.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Carousel from "@/components/Common/Carousel";
 import PostCard from "../Post/PostCard";
 import { PostProps } from "@/types/post";
 import styles from "./PostList.module.scss";
+import axiosInstance from "@/configs/axiosConfig";
 
 const PostList: React.FC = () => {
-    const posts: PostProps[] = [
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-        { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-    ];
+    const [posts, setPosts] = React.useState<PostProps[]>([]);
+
+    useEffect(() => {
+        axiosInstance.get("/posts").then((response) => {
+            setPosts(response.data);
+        });
+    }, []);
 
     return (
         <ul className={styles["list-container"]}>

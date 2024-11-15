@@ -24,6 +24,7 @@ export interface PostFormInputs {
 
 export interface PostProps {
     postId: number;
+    category: number;
     author: string;
     title: string;
     content: string;

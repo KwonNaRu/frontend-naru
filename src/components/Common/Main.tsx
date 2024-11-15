@@ -1,7 +1,7 @@
 // components/CategoryList.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Main.module.scss";
 import { PostFormInputs } from "@/types/post";
 import Modal from "../Common/Modal";
@@ -11,6 +11,7 @@ import { useAppSelector } from "@/store/hooks";
 import axios from "@/configs/axiosConfig";
 import CategoryList from "@/components/Category/CategoryList";
 import PostList from "../Post/PostList";
+import { useMessage } from "./ContextAPI";
 
 const Main: React.FC = () => {
     const { user } = useAppSelector((state) => state.auth);
@@ -25,6 +26,18 @@ const Main: React.FC = () => {
         category: null,
     });
     const [author, setAuthor] = useState("");
+
+    const { message } = useMessage();
+
+    useEffect(() => {
+        if (message) {
+            const { postId, author, title, content, category } = message;
+            setPost({ postId, title, content, category });
+            setAuthor(author);
+
+            handlePostOpenModal();
+        }
+    }, [message]);
 
     const handleCategoryOpenModal = () => {
         setCategoryModalOpen(true);

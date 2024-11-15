@@ -2,6 +2,7 @@ import Logo from "@/components/Common/Logo";
 import styles from "./page.module.scss";
 import Header from "@/components/Common/Header";
 import Main from "@/components/Common/Main";
+import { MessageProvider } from "@/components/Common/ContextAPI";
 
 export default function Home() {
     return (
@@ -11,7 +12,9 @@ export default function Home() {
                 <Logo width={200} height={200} loading="eager" />
                 <h1>Welcome to Naru&apos;s blog</h1>
             </section>
-            <Main />
+            <MessageProvider>
+                <Main />
+            </MessageProvider>
             <footer className={styles["landing-footer"]}>
                 <p>&copy; 2024 Our Platform. All rights reserved.</p>
             </footer>
