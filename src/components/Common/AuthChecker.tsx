@@ -16,8 +16,8 @@ export default function AuthChecker() {
             const decodedToken = decodeToken(nidAuthCookie) as GlobalDecodedJwtToken;
 
             // 필요한 정보 추출
-            const username = decodedToken.sub;
-            const email = decodedToken.email;
+            const email = decodedToken.sub;
+            const username = decodedToken.username;
             const role = decodedToken.role;
 
             // 쿠키 존재 시 인증 상태로 설정
