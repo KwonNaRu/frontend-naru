@@ -19,6 +19,25 @@ export const metadata: Metadata = {
             url: "/images/favicon.ico",
         },
     ],
+    openGraph: {
+        title: "Naru's Blog",
+        description: "Welcome to Naru's blog where interesting posts await you.",
+        url: "https://example.com", // TODO: replace with your site URL
+        images: [
+            {
+                url: "/images/favicon.ico",
+                width: 800,
+                height: 600,
+                alt: "Naru's Blog",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Naru's Blog",
+        description: "Interesting posts on Naru's blog",
+        images: "/images/favicon.ico",
+    },
 };
 
 export default function RootLayout({
