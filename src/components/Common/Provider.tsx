@@ -6,6 +6,7 @@ import { store, persistor } from "@/store";
 import { useEffect } from "react";
 import AuthChecker from "./AuthChecker";
 import Loading from "./Loading";
+// import NavigationWrapper from "../Navigation/NavigationWrapper";
 
 export default function Providers({
     children,
@@ -25,9 +26,11 @@ export default function Providers({
     return (
         <Provider store={store}>
             <AuthChecker />
+            {/* <NavigationWrapper> */}
             <PersistGate loading={<Loading />} persistor={persistor}>
                 {children}
             </PersistGate>
+            {/* </NavigationWrapper> */}
         </Provider>
     );
 }
