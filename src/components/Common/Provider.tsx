@@ -5,6 +5,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/store";
 import { useEffect } from "react";
 import AuthChecker from "./AuthChecker";
+import Loading from "./Loading";
 
 export default function Providers({
     children,
@@ -24,7 +25,7 @@ export default function Providers({
     return (
         <Provider store={store}>
             <AuthChecker />
-            <PersistGate loading={null} persistor={persistor}>
+            <PersistGate loading={<Loading />} persistor={persistor}>
                 {children}
             </PersistGate>
         </Provider>
