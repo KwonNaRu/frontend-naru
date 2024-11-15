@@ -8,7 +8,7 @@ export default function Home() {
         <div className={styles["landing-container"]}>
             <Header />
             <section className={styles["landing-introduction"]}>
-                <Logo width={250} height={250} />
+                <Logo width={200} height={200} loading="eager" />
                 <h1>Welcome to Naru&apos;s blog</h1>
             </section>
             <main className={styles["landing-main"]}>
