@@ -1,7 +1,7 @@
 import Logo from "@/components/Common/Logo";
 import styles from "./page.module.scss";
 import Header from "@/components/Common/Header";
-import CategoryList from "@/components/Category/CategoryList";
+import Main from "@/components/Common/Main";
 
 export default function Home() {
     return (
@@ -11,9 +11,7 @@ export default function Home() {
                 <Logo width={200} height={200} loading="eager" />
                 <h1>Welcome to Naru&apos;s blog</h1>
             </section>
-            <main className={styles["landing-main"]}>
-                <CategoryList />
-            </main>
+            <Main />
             <footer className={styles["landing-footer"]}>
                 <p>&copy; 2024 Our Platform. All rights reserved.</p>
             </footer>

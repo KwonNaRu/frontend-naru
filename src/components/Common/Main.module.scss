@@ -1,0 +1,23 @@
+@use "@/styles/abstracts" as *;
+
+.main-btn-container {
+    display: flex;
+    justify-content: space-between;
+
+    .category-add-btn {
+        @include default-fill-btn($soft-pink, white);
+    }
+
+    .post-add-btn {
+        @include default-fill-btn($crimson-pink, white);
+    }
+}
+
+.landing-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    background: #ffffff;
+    border-top: 1px solid #ddd;
+}

@@ -1,15 +1,10 @@
 // components/CategoryList.tsx
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Category.module.scss";
 import Category from "./Category";
-import { CategoryType, PostFormInputs } from "@/types/post";
-import Modal from "../Common/Modal";
-import CategoryEditor from "./CategoryEditor";
-import PostEditor from "../Post/PostEditor";
-import { useAppSelector } from "@/store/hooks";
-import axios from "@/configs/axiosConfig";
+import { CategoryType } from "@/types/post";
 
 const CategoryList: React.FC = () => {
     const categories: CategoryType[] = [
@@ -17,102 +12,40 @@ const CategoryList: React.FC = () => {
             id: 1,
             name: "Technology",
             posts: [
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
             ],
         },
         {
             id: 2,
             name: "Health",
             posts: [
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
             ],
         },
         {
             id: 3,
             name: "Travel",
             posts: [
-                { postId: 1, user: { username: "User 1", email: "", role: "" }, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 2, user: { username: "User 2", email: "", role: "" }, title: "Tech Post 2", content: "Content of tech post 2", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
+                { postId: 1, author: "User 1", title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
             ],
         },
     ];
 
-    const { user } = useAppSelector((state) => state.auth);
-
-    const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
-    const [isPostModalOpen, setPostModalOpen] = useState(false);
-
-    const [post, setPost] = useState<PostFormInputs>({
-        postId: null,
-        title: "",
-        content: "",
-        category: null,
-    });
-    const [author, setAuthor] = useState("");
-
-    const handleCategoryOpenModal = () => {
-        setCategoryModalOpen(true);
-    };
-
-    const handleCategoryCloseModal = () => {
-        setCategoryModalOpen(false);
-    };
-
-    const createPost = async () => {
-        try {
-            const response = await axios.post("/posts");
-            const { postId, username, title, content, category } = response.data;
-            setPost({ postId, title, content, category });
-            setAuthor(username);
-
-            handlePostOpenModal();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handlePostOpenModal = () => {
-        setPostModalOpen(true);
-    };
-
-    const handlePostCloseModal = () => {
-        setPostModalOpen(false);
-    };
-
     return (
-        <>
-            <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
-            <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ postFormInputs: post, author, onClose: () => setPostModalOpen(false) }} />
-
-            {user?.role === "OWNER" ? (
-                <div className={styles["category-list-btn-container"]}>
-                    <button type="button" onClick={() => handleCategoryOpenModal()} className={styles["category-add-btn"]}>
-                        카테고리 추가
-                    </button>
-                    <button type="button" onClick={() => createPost()} className={styles["post-add-btn"]}>
-                        게시글 생성
-                    </button>
-                </div>
-            ) : null}
-
-            <ul className={styles["category-list"]}>
-                {categories.map((category) => (
-                    <Category key={category.id} category={category} />
-                ))}
-            </ul>
-        </>
+        <ul className={styles["category-list"]}>
+            {categories.map((category) => (
+                <Category key={category.id} category={category} />
+            ))}
+        </ul>
     );
 };
 

@@ -5,7 +5,7 @@ import { PostProps } from "@/types/post";
 import { useAppSelector } from "@/store/hooks";
 import styles from "./PostCard.module.scss";
 
-const PostCard: React.FC<PostProps> = ({ user, title }) => {
+const PostCard: React.FC<PostProps> = ({ author, title }) => {
     const [isEditing, setIsEditing] = useState(false);
     // const [editedContent, setEditedContent] = useState(content);
 
@@ -15,13 +15,13 @@ const PostCard: React.FC<PostProps> = ({ user, title }) => {
         setIsEditing(true);
     };
 
-    const isEditable = userState?.username === user.username;
+    const isEditable = userState?.username === author;
 
     return (
         <div className={styles.postCard}>
             <h2 className={styles.postCardTitle}>{title}</h2>
             <p className={styles.postCardAuthor}>
-                <strong>작성자:</strong> {user.username}
+                <strong>작성자:</strong> {author}
             </p>
             {/* {isEditing ? (
                 <div>

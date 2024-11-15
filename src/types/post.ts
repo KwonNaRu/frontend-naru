@@ -24,7 +24,7 @@ export interface PostFormInputs {
 
 export interface PostProps {
     postId: number;
-    user: User;
+    author: string;
     title: string;
     content: string;
     comments: CommentProps[]; // CommentProps 타입으로 지정
