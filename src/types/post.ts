@@ -1,7 +1,7 @@
 import { User } from '@/types'
 
 export interface CategoryFormInputs {
-    title: string;
+    name: string;
 }
 
 export interface CategoryType {
@@ -13,6 +13,14 @@ export interface CategoryType {
 export interface CategoryProps {
     category: CategoryType;
 }
+
+export interface PostFormInputs {
+    postId: number | null;
+    title: string | null;
+    content: string | null;
+    category: number | null;
+}
+
 
 export interface PostProps {
     postId: number;

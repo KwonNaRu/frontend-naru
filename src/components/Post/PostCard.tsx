@@ -1,7 +1,6 @@
 // components/Post.tsx
 
 import React, { useState } from "react";
-// import CommentList from "./CommentList";
 import { PostProps } from "@/types/post";
 import { useAppSelector } from "@/store/hooks";
 import styles from "./PostCard.module.scss";
@@ -15,12 +14,6 @@ const PostCard: React.FC<PostProps> = ({ user, title }) => {
     const handleEdit = () => {
         setIsEditing(true);
     };
-
-    // const handleSave = () => {
-    //     // 저장 로직 추가 (예: API 호출)
-    //     setIsEditing(false);
-    //     // 여기서 editedContent를 서버에 저장하는 로직을 추가
-    // };
 
     const isEditable = userState?.username === user.username;
 

@@ -16,5 +16,20 @@ export const categorySchema = yup.object().shape({
 })
 
 export const postSchema = yup.object().shape({
-    name: yup.string().required("title is required")
+    postId: yup
+        .number()
+        .nullable()
+        .default(null),
+    title: yup
+        .string()
+        .nullable()
+        .default(null),
+    content: yup
+        .string()
+        .nullable()
+        .default(null),
+    category: yup
+        .number()
+        .nullable()
+        .default(null)
 })

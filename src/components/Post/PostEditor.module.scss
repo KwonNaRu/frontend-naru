@@ -1,0 +1,77 @@
+@use "@/styles/abstracts" as *;
+
+.editButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+.editingArea {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+    }
+}
+
+.saveButton {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #218838;
+    }
+}
+
+.post-edit__form {
+    display: flex;
+    flex-direction: column;
+    color: $charcoal;
+
+    > div {
+        display: flex;
+        gap: 1rem;
+    }
+
+    label {
+        width: 20%;
+        text-align: left;
+    }
+
+    .post__input {
+    }
+
+    .post-author {
+        margin: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    textarea {
+        width: 100%;
+        height: 300px;
+    }
+}

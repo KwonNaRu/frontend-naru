@@ -42,5 +42,13 @@
             @include default-fill-btn($light-beige, $charcoal);
             white-space: nowrap;
         }
+
+        > textarea {
+            align-self: flex-start;
+        }
+
+        hr {
+            margin: 0;
+        }
     }
 }
