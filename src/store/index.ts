@@ -1,7 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage를 사용하기 위한 storage
-import rootReducer from './reducers';
+import authReducer from './auth/authSlice'
+import postReducer from './auth/postSlice'
 
 // Redux Persist 설정
 // - key: localStorage에 저장될 때 사용될 키 이름
@@ -10,6 +11,13 @@ const persistConfig = {
     key: 'root',
     storage,
 };
+
+// reducer 통합
+const rootReducer = combineReducers({
+    auth: authReducer,
+    post: postReducer,
+});
+
 
 // rootReducer를 persistReducer로 감싸서 상태 지속성 추가
 // - 이를 통해 페이지 새로고침해도 상태가 유지됨
