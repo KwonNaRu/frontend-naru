@@ -28,7 +28,8 @@ const Carousel: React.FC<CarouselProps> = ({ slides }) => {
         }
     };
 
-    const handleMouseUp = () => {
+    const handleMouseUp = (e: React.MouseEvent) => {
+        e.stopPropagation();
         isDragging.current = false;
         if (trackRef.current) {
             trackRef.current.style.cursor = "grab";

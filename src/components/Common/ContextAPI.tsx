@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { createContext, useContext, useState } from "react";
 
 type MessageContextType = {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     message: any;
     setMessage: (value: any) => void;
 };
