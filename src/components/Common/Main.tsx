@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./Main.module.scss";
-import { PostFormInputs } from "@/types/post";
+import { PostFormInputs, PostProps } from "@/types/post";
 import Modal from "../Common/Modal";
 import CategoryEditor from "@/components/Category/CategoryEditor";
 import PostEditor from "../Post/PostEditor";
@@ -12,6 +12,7 @@ import axios from "@/configs/axiosConfig";
 import CategoryList from "@/components/Category/CategoryList";
 import PostList from "../Post/PostList";
 import { useMessage } from "./ContextAPI";
+import axiosInstance from "@/configs/axiosConfig";
 
 const Main: React.FC = () => {
     const { user } = useAppSelector((state) => state.auth);
@@ -68,6 +69,14 @@ const Main: React.FC = () => {
         setPostModalOpen(false);
     };
 
+    const [posts, setPosts] = useState<PostProps[]>([]);
+
+    useEffect(() => {
+        axiosInstance.get("/posts").then((response) => {
+            setPosts(response.data);
+        });
+    }, []);
+
     return (
         <main className={styles["landing-main"]}>
             <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
@@ -84,7 +93,7 @@ const Main: React.FC = () => {
                 </div>
             ) : null}
 
-            <PostList />
+            <PostList posts={posts} />
 
             <CategoryList />
         </main>

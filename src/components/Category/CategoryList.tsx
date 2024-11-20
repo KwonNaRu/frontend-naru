@@ -1,55 +1,27 @@
 // components/CategoryList.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Category.module.scss";
 import Category from "./Category";
 import { CategoryType } from "@/types/post";
+import axiosInstance from "@/configs/axiosConfig";
 
 const CategoryList: React.FC = () => {
-    const categories: CategoryType[] = [
-        {
-            id: 1,
-            name: "Technology",
-            posts: [
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-            ],
-        },
-        {
-            id: 2,
-            name: "Health",
-            posts: [
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-            ],
-        },
-        {
-            id: 3,
-            name: "Travel",
-            posts: [
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-                { postId: 1, author: "User 1", category: 1, title: "Tech Post 1", content: "Content of tech post 1", comments: [] },
-            ],
-        },
-    ];
+    const [categories, setCategories] = useState<CategoryType[]>([]);
+    useEffect(() => {
+        axiosInstance.get("/categories").then((response) => {
+            setCategories(response.data);
+        });
+    }, []);
 
-    return (
+    return categories.length > 0 ? (
         <ul className={styles["category-list"]}>
             {categories.map((category) => (
                 <Category key={category.id} category={category} />
             ))}
         </ul>
-    );
+    ) : null;
 };
 
 export default CategoryList;

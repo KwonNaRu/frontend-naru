@@ -21,11 +21,13 @@
 
     .categoryTitleWrapper {
         align-self: start;
-        margin-block-end: 0.6rem;
-        h3 {
-            display: inline;
+
+        .categoryTitle {
+            font-size: 1.3rem;
+            font-weight: 500;
             margin: 0.6rem;
             text-align: start;
+            vertical-align: middle;
         }
 
         button {
