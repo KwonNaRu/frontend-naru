@@ -13,6 +13,7 @@ import { useAppSelector } from "@/store/hooks";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import Cookies from "js-cookie";
+import { throttle } from "lodash";
 
 interface PostFormType {
     postFormInputs: PostFormInputs;
@@ -20,13 +21,19 @@ interface PostFormType {
     onClose: () => void;
 }
 
-const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author, onClose }) => {
+const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
     const {
         register,
+        watch,
         formState: { errors },
-        reset,
-    } = useForm<PostFormInputs>({
+    } = useForm({
         resolver: yupResolver(postSchema),
+        defaultValues: {
+            postId: postFormInputs.postId,
+            title: postFormInputs.title,
+            content: postFormInputs.content,
+            category: postFormInputs.category,
+        },
     });
 
     const [errorMessage, setErrorMessage] = useState("");
@@ -52,26 +59,16 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author, onClose })
                 Authorization: `Bearer ${Cookies.get("NID_AUTH")}`,
             };
 
-            client.current.onConnect = (frame) => {
+            client.current.onConnect = (frame: any) => {
                 console.log("Connected: " + frame);
 
                 // /topic/posts 경로에 구독 설정
-                client.current?.subscribe("/topic/posts", (message) => {
+                client.current?.subscribe("/topic/posts", (message: any) => {
                     console.log("Received message: ", message.body);
-                });
-
-                // 서버에 메시지 보내기 - 목적지 경로는 /app/post
-                client.current?.publish({
-                    destination: "/app/post",
-                    body: JSON.stringify({
-                        postId: postFormInputs.postId,
-                        title: "Updated title",
-                        content: "Updated content",
-                    }),
                 });
             };
 
-            client.current!.onStompError = (frame) => {
+            client.current!.onStompError = (frame: any) => {
                 console.error("Broker reported error: " + frame.headers["message"]);
                 console.error("Additional details: " + frame.body);
                 setErrorMessage("게시글 수정에 실패했습니다. 다시 시도해 주세요.");
@@ -88,19 +85,92 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author, onClose })
         }
     }, []);
 
+    // 로컬스토리지 키 설정
+    const STORAGE_KEY = `post_draft_${postFormInputs.postId}`;
+
+    // 쓰로틀된 publish 함수 생성
+    const throttledPublish = useMemo(
+        () =>
+            throttle((data: PostFormInputs) => {
+                try {
+                    client.current?.publish({
+                        destination: "/app/post",
+                        body: JSON.stringify({
+                            postId: postFormInputs.postId,
+                            title: data.title,
+                            content: data.content,
+                            category: data.category,
+                        }),
+                    });
+                    // publish 성공 시 로컬스토리지 초기화
+                    localStorage.removeItem(STORAGE_KEY);
+                } catch (error) {
+                    console.error(error);
+                    setErrorMessage("게시글 전송에 실패했습니다.");
+                    setShowError(true);
+                }
+            }, 1000), // 1초 쓰로틀링
+        [postFormInputs.postId]
+    );
+
+    // 입력값 변화 감지 및 로컬스토리지 저장
     useEffect(() => {
-        reset({
-            postId: null,
-            title: "",
-            content: "",
-            category: null,
+        const subscription = watch((data) => {
+            // 로컬스토리지에 저장
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            // 쓰로틀된 publish 실행
+            throttledPublish(data as PostFormInputs);
         });
 
         return () => {
-            // 컴포넌트 언마운트 시 연결 해제
+            subscription.unsubscribe();
+            throttledPublish.cancel(); // 쓰로틀 취소
+        };
+    }, [watch, throttledPublish, STORAGE_KEY]);
+
+    // 입력값 변화 감지
+    useEffect(() => {
+        const subscription = watch((data) => {
+            try {
+                client.current?.publish({
+                    destination: "/app/post",
+                    body: JSON.stringify({
+                        postId: postFormInputs.postId,
+                        title: data.title,
+                        content: data.content,
+                        category: data.category,
+                    }),
+                });
+            } catch (error) {
+                console.error(error);
+                setErrorMessage("게시글 전송에 실패했습니다.");
+                setShowError(true);
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch, postFormInputs.postId]);
+
+    // 컴포넌트 언마운트 시 로컬스토리지 데이터 publish
+    useEffect(() => {
+        return () => {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                try {
+                    client.current?.publish({
+                        destination: "/app/post",
+                        body: savedData,
+                    });
+                    localStorage.removeItem(STORAGE_KEY);
+                } catch (error) {
+                    console.error(error);
+                    setErrorMessage("게시글 전송에 실패했습니다.");
+                    setShowError(true);
+                }
+            }
             client.current?.deactivate();
         };
-    }, [onClose, reset]);
+    }, [STORAGE_KEY]);
 
     return (
         <>
