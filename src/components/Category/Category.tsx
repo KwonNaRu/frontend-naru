@@ -18,7 +18,7 @@ const Category: React.FC<CategoryProps> = ({ category }) => {
                     </button>
                 ) : null}
             </div>
-            <PostList posts={category.posts} />
+            <PostList postList={category.posts} />
         </li>
     );
 };

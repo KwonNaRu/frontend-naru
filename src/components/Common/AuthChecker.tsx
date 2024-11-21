@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie"; // js-cookie 라이브러리 사용 권장
-import { signIn, signOut } from "@/store/auth/authSlice";
+import { signIn, signOut } from "@/store/authSlice";
 import { decodeToken } from "react-jwt";
 
 export default function AuthChecker() {

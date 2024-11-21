@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage를 사용하기 위한 storage
-import authReducer from './auth/authSlice'
-import postReducer from './auth/postSlice'
+import authReducer from './authSlice'
+import postReducer from './postSlice'
 
 // Redux Persist 설정
 // - key: localStorage에 저장될 때 사용될 키 이름

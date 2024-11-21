@@ -3,7 +3,7 @@
 import styles from "./Header.module.scss";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { signOut } from "@/store/auth/authSlice";
+import { signOut } from "@/store/authSlice";
 
 const Header: React.FC = () => {
     const dispatch = useAppDispatch();

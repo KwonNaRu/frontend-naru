@@ -3,10 +3,11 @@
 import React, { useRef } from "react";
 import { PostProps } from "@/types/post";
 import styles from "./PostCard.module.scss";
-import { useMessage } from "../Common/ContextAPI";
+import { useAppDispatch } from "@/store/hooks";
+import { setPost } from "@/store/postSlice";
 
-const PostCard: React.FC<PostProps> = ({ postId, author, title, content }) => {
-    const { setMessage } = useMessage();
+const PostCard: React.FC<PostProps> = ({ id, author, title, content, categoryId, comments }) => {
+    const dispatch = useAppDispatch();
 
     const isDragging = useRef(false);
     const startX = useRef(0);
@@ -24,12 +25,7 @@ const PostCard: React.FC<PostProps> = ({ postId, author, title, content }) => {
 
     const handleEdit = () => {
         if (!isDragging.current) {
-            setMessage({
-                postId,
-                title,
-                author,
-                content,
-            });
+            dispatch(setPost({ id, title, author, content, categoryId, comments }));
         }
     };
 

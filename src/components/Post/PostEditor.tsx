@@ -1,6 +1,5 @@
-"use client";
-
 // components/post.tsx
+"use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./PostEditor.module.scss";
@@ -16,12 +15,12 @@ import Cookies from "js-cookie";
 import { throttle } from "lodash";
 
 interface PostFormType {
-    postFormInputs: PostFormInputs;
-    author: string;
     onClose: () => void;
 }
 
-const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
+const PostEditor: React.FC<PostFormType> = () => {
+    const { post } = useAppSelector((state) => state.post);
+
     const {
         register,
         watch,
@@ -29,10 +28,10 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
     } = useForm({
         resolver: yupResolver(postSchema),
         defaultValues: {
-            postId: postFormInputs.postId,
-            title: postFormInputs.title,
-            content: postFormInputs.content,
-            category: postFormInputs.category,
+            id: post?.id,
+            title: post?.title,
+            content: post?.content,
+            categoryId: post?.categoryId,
         },
     });
 
@@ -86,7 +85,7 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
     }, []);
 
     // 로컬스토리지 키 설정
-    const STORAGE_KEY = `post_draft_${postFormInputs.postId}`;
+    const STORAGE_KEY = `post_draft_${post?.id}`;
 
     // 쓰로틀된 publish 함수 생성
     const throttledPublish = useMemo(
@@ -96,10 +95,10 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
                     client.current?.publish({
                         destination: "/app/post",
                         body: JSON.stringify({
-                            postId: postFormInputs.postId,
+                            id: post?.id,
                             title: data.title,
                             content: data.content,
-                            category: data.category,
+                            categoryId: data.categoryId,
                         }),
                     });
                     // publish 성공 시 로컬스토리지 초기화
@@ -110,7 +109,7 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
                     setShowError(true);
                 }
             }, 1000), // 1초 쓰로틀링
-        [postFormInputs.postId]
+        [post?.id]
     );
 
     // 입력값 변화 감지 및 로컬스토리지 저장
@@ -135,10 +134,10 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
                 client.current?.publish({
                     destination: "/app/post",
                     body: JSON.stringify({
-                        postId: postFormInputs.postId,
+                        id: post?.id,
                         title: data.title,
                         content: data.content,
-                        category: data.category,
+                        categoryId: data.categoryId,
                     }),
                 });
             } catch (error) {
@@ -149,7 +148,7 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
         });
 
         return () => subscription.unsubscribe();
-    }, [watch, postFormInputs.postId]);
+    }, [watch, post?.id]);
 
     // 컴포넌트 언마운트 시 로컬스토리지 데이터 publish
     useEffect(() => {
@@ -178,25 +177,25 @@ const PostEditor: React.FC<PostFormType> = ({ postFormInputs, author }) => {
             <form className={styles["post-edit__form"]}>
                 <div>
                     <label htmlFor="title">제목</label>
-                    {isEditable ? <input type="text" id="title" {...register("title")} className={styles["post__input"]} /> : <span>{postFormInputs.title}</span>}
+                    {isEditable ? <input type="text" id="title" {...register("title")} className={styles["post__input"]} /> : <span>{post?.title}</span>}
                 </div>
                 {errors.title && <p className={styles["error-message"]}>{errors.title.message}</p>}
                 <div>
                     <label htmlFor="category">카테고리</label>
-                    {isEditable ? <input type="text" id="category" {...register("category")} className={styles["post__input"]} /> : <span>{postFormInputs.category}</span>}
+                    {isEditable ? <input type="text" id="category" {...register("categoryId")} className={styles["post__input"]} /> : <span>{post?.categoryId}</span>}
                 </div>
-                {errors.category && <p className={styles["error-message"]}>{errors.category.message}</p>}
+                {errors.categoryId && <p className={styles["error-message"]}>{errors.categoryId.message}</p>}
                 <div>
                     <label htmlFor="author">작성자</label>
                     <span id="author" className={styles["post-author"]}>
-                        {author}
+                        {post?.author}
                     </span>
                 </div>
                 <hr />
                 <label htmlFor="author" className="sr-only">
                     내용
                 </label>
-                {isEditable ? <textarea id="content" {...register("content")} className={styles["post__textarea"]} /> : <span>{postFormInputs.content}</span>}
+                {isEditable ? <textarea id="content" {...register("content")} className={styles["post__textarea"]} /> : <span>{post?.content}</span>}
                 {errors.content && <p className={styles["error-message"]}>{errors.content.message}</p>}
             </form>
         </>

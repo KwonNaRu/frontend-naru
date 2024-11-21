@@ -5,14 +5,14 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/validationSchemas"; // 로그인용 유효성 검사 스키마
-import axios from "@/configs/axiosConfig"; // 설정한 Axios 인스턴스 임포트
-import { useDispatch } from "react-redux";
-import { signIn } from "@/store/auth/authSlice"; // login action 가져오기
+import { useAppDispatch } from "@/store/hooks";
+import { signIn } from "@/store/authSlice"; // login action 가져오기
 import styles from "./signin.module.scss";
 import { decodeToken } from "react-jwt";
 import Cookies from "js-cookie";
 import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
+import axiosInstance from "@/configs/axiosConfig";
 
 // 로그인 폼에 입력될 데이터의 타입 정의
 interface LoginFormInputs {
@@ -33,14 +33,14 @@ const SignInForm: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showError, setShowError] = useState(false);
 
-    const dispatch = useDispatch(); // Redux dispatch 함수
+    const dispatch = useAppDispatch(); // Redux dispatch 함수
     const router = useRouter();
 
     // 폼 제출 시 실행될 함수
     const onSubmit = async (data: LoginFormInputs) => {
         try {
             // 서버에 로그인 정보 전송
-            const response = await axios.post("/auth/login", data);
+            const response = await axiosInstance.post("/auth/login", data);
             const token = response.data;
 
             const decodedToken = decodeToken(token) as GlobalDecodedJwtToken;

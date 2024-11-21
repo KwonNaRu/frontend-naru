@@ -3,16 +3,14 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./Main.module.scss";
-import { PostFormInputs, PostProps } from "@/types/post";
 import Modal from "../Common/Modal";
 import CategoryEditor from "@/components/Category/CategoryEditor";
 import PostEditor from "../Post/PostEditor";
-import { useAppSelector } from "@/store/hooks";
-import axios from "@/configs/axiosConfig";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import CategoryList from "@/components/Category/CategoryList";
 import PostList from "../Post/PostList";
-import { useMessage } from "./ContextAPI";
 import axiosInstance from "@/configs/axiosConfig";
+import { setPost, setPostList } from "@/store/postSlice";
 
 const Main: React.FC = () => {
     const { user } = useAppSelector((state) => state.auth);
@@ -20,25 +18,15 @@ const Main: React.FC = () => {
     const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
     const [isPostModalOpen, setPostModalOpen] = useState(false);
 
-    const [post, setPost] = useState<PostFormInputs>({
-        postId: null,
-        title: "",
-        content: "",
-        category: null,
-    });
-    const [author, setAuthor] = useState("");
+    const dispatch = useAppDispatch();
 
-    const { message } = useMessage();
+    const { post } = useAppSelector((state) => state.post);
 
     useEffect(() => {
-        if (message) {
-            const { postId, author, title, content, category } = message;
-            setPost({ postId, title, content, category });
-            setAuthor(author);
-
+        if (post) {
             handlePostOpenModal();
         }
-    }, [message]);
+    }, [post]);
 
     const handleCategoryOpenModal = () => {
         setCategoryModalOpen(true);
@@ -50,10 +38,9 @@ const Main: React.FC = () => {
 
     const createPost = async () => {
         try {
-            const response = await axios.post("/posts");
-            const { postId, username, title, content, category } = response.data;
-            setPost({ postId, title, content, category });
-            setAuthor(username);
+            const response = await axiosInstance.post("/posts");
+            const { id, username, title, content, categoryId, comments } = response.data;
+            dispatch(setPost({ id, author: username, title, content, categoryId, comments }));
 
             handlePostOpenModal();
         } catch (error) {
@@ -69,18 +56,17 @@ const Main: React.FC = () => {
         setPostModalOpen(false);
     };
 
-    const [posts, setPosts] = useState<PostProps[]>([]);
-
+    const { postList } = useAppSelector((state) => state.post);
     useEffect(() => {
         axiosInstance.get("/posts").then((response) => {
-            setPosts(response.data);
+            dispatch(setPostList(response.data));
         });
     }, []);
 
     return (
         <main className={styles["landing-main"]}>
             <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
-            <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ postFormInputs: post, author, onClose: () => setPostModalOpen(false) }} />
+            <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ onClose: () => setPostModalOpen(false) }} />
 
             {user?.role === "OWNER" ? (
                 <div className={styles["main-btn-container"]}>
@@ -93,7 +79,7 @@ const Main: React.FC = () => {
                 </div>
             ) : null}
 
-            <PostList posts={posts} />
+            <PostList postList={postList} />
 
             <CategoryList />
         </main>

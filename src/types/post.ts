@@ -15,16 +15,16 @@ export interface CategoryProps {
 }
 
 export interface PostFormInputs {
-    postId: number | null;
+    id: number | null;
     title: string | null;
     content: string | null;
-    category: number | null;
+    categoryId: number | null;
 }
 
 
 export interface PostProps {
-    postId: number;
-    category: number;
+    id: number;
+    categoryId: number;
     author: string;
     title: string;
     content: string;

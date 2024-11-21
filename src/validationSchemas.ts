@@ -16,7 +16,7 @@ export const categorySchema = yup.object().shape({
 })
 
 export const postSchema = yup.object().shape({
-    postId: yup
+    id: yup
         .number()
         .nullable()
         .default(null),
@@ -28,7 +28,7 @@ export const postSchema = yup.object().shape({
         .string()
         .nullable()
         .default(null),
-    category: yup
+    categoryId: yup
         .number()
         .nullable()
         .default(null)

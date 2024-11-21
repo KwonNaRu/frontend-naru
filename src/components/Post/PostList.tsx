@@ -7,12 +7,12 @@ import PostCard from "../Post/PostCard";
 import { PostProps } from "@/types/post";
 import styles from "./PostList.module.scss";
 
-const PostList: React.FC<{ posts: PostProps[] }> = ({ posts }) => {
-    return posts.length > 0 ? (
+const PostList: React.FC<{ postList: PostProps[] }> = ({ postList }) => {
+    return postList.length > 0 ? (
         <ul className={styles["list-container"]}>
             <Carousel
-                slides={posts.map((post) => (
-                    <PostCard key={post.postId} {...post} /> // Post 컴포넌트 반복 렌더링
+                slides={postList.map((post) => (
+                    <PostCard key={post.id} {...post} /> // Post 컴포넌트 반복 렌더링
                 ))}
             />
         </ul>
