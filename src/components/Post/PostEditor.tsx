@@ -13,6 +13,7 @@ import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import Cookies from "js-cookie";
 import { throttle } from "lodash";
+import { computedCategoryListWithoutPosts } from "@/store/categorySlice";
 
 interface PostFormType {
     onClose: () => void;
@@ -21,11 +22,7 @@ interface PostFormType {
 const PostEditor: React.FC<PostFormType> = () => {
     const { post } = useAppSelector((state) => state.post);
 
-    const {
-        register,
-        watch,
-        formState: { errors },
-    } = useForm({
+    const { register, watch } = useForm({
         resolver: yupResolver(postSchema),
         defaultValues: {
             id: post?.id,
@@ -34,6 +31,8 @@ const PostEditor: React.FC<PostFormType> = () => {
             categoryId: post?.categoryId,
         },
     });
+
+    const categoriesWithoutPosts = useAppSelector(computedCategoryListWithoutPosts);
 
     const [errorMessage, setErrorMessage] = useState("");
     const [showError, setShowError] = useState(false);
@@ -179,12 +178,21 @@ const PostEditor: React.FC<PostFormType> = () => {
                     <label htmlFor="title">제목</label>
                     {isEditable ? <input type="text" id="title" {...register("title")} className={styles["post__input"]} /> : <span>{post?.title}</span>}
                 </div>
-                {errors.title && <p className={styles["error-message"]}>{errors.title.message}</p>}
                 <div>
                     <label htmlFor="category">카테고리</label>
-                    {isEditable ? <input type="text" id="category" {...register("categoryId")} className={styles["post__input"]} /> : <span>{post?.categoryId}</span>}
+                    {isEditable ? (
+                        <select id="category" {...register("categoryId")} className={styles["post__input"]}>
+                            <option value="">카테고리 선택</option>
+                            {categoriesWithoutPosts.map((category) => (
+                                <option key={category.id} value={`${category.id}`}>
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <span>{post?.categoryId}</span>
+                    )}
                 </div>
-                {errors.categoryId && <p className={styles["error-message"]}>{errors.categoryId.message}</p>}
                 <div>
                     <label htmlFor="author">작성자</label>
                     <span id="author" className={styles["post-author"]}>
@@ -196,7 +204,6 @@ const PostEditor: React.FC<PostFormType> = () => {
                     내용
                 </label>
                 {isEditable ? <textarea id="content" {...register("content")} className={styles["post__textarea"]} /> : <span>{post?.content}</span>}
-                {errors.content && <p className={styles["error-message"]}>{errors.content.message}</p>}
             </form>
         </>
     );

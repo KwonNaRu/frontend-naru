@@ -6,7 +6,7 @@ import { CategoryProps } from "@/types/post";
 import { useAppSelector } from "@/store/hooks";
 import PostList from "../Post/PostList";
 
-const Category: React.FC<CategoryProps> = ({ category }) => {
+const Category: React.FC<CategoryProps> = (category) => {
     const { user } = useAppSelector((state) => state.auth);
     return (
         <li className={styles.categoryItem}>

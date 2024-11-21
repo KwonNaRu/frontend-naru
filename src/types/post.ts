@@ -4,14 +4,10 @@ export interface CategoryFormInputs {
     name: string;
 }
 
-export interface CategoryType {
+export interface CategoryProps {
     id: number | null;
     name: string | null;
     posts: PostProps[];
-}
-
-export interface CategoryProps {
-    category: CategoryType;
 }
 
 export interface PostFormInputs {

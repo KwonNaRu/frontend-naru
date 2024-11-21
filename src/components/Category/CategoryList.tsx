@@ -1,24 +1,26 @@
 // components/CategoryList.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./Category.module.scss";
 import Category from "./Category";
-import { CategoryType } from "@/types/post";
 import axiosInstance from "@/configs/axiosConfig";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { setCategoryList } from "@/store/categorySlice";
 
 const CategoryList: React.FC = () => {
-    const [categories, setCategories] = useState<CategoryType[]>([]);
+    const dispatch = useAppDispatch();
+    const { categoryList } = useAppSelector((state) => state.category);
     useEffect(() => {
         axiosInstance.get("/categories").then((response) => {
-            setCategories(response.data);
+            dispatch(setCategoryList(response.data));
         });
     }, []);
 
-    return categories.length > 0 ? (
+    return categoryList.length > 0 ? (
         <ul className={styles["category-list"]}>
-            {categories.map((category) => (
-                <Category key={category.id} category={category} />
+            {categoryList.map((category) => (
+                <Category key={category.id} {...category} />
             ))}
         </ul>
     ) : null;

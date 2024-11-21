@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // localStorage를 사용하기 위한 storage
 import authReducer from './authSlice'
 import postReducer from './postSlice'
-
+import categoryReducer from './categorySlice'
 // Redux Persist 설정
 // - key: localStorage에 저장될 때 사용될 키 이름
 // - storage: 실제 저장소 (localStorage)
@@ -16,6 +16,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     post: postReducer,
+    category: categoryReducer,
 });
 
 
