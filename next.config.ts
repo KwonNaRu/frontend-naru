@@ -4,6 +4,7 @@ import path from 'path'
 const nextConfig: NextConfig = {
   /* config options here */
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || '', // GitHub Pages에서 사용하는 리포지토리 이름을 지정
+  assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || '',
   webpack: (config) => {
     // Webpack 설정 커스터마이징 부분
     // config.module.rules.push({
