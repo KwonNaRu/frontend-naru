@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import path from 'path'
 
 const nextConfig: NextConfig = {
-  output: 'export',
   /* config options here */
   webpack: (config) => {
     // Webpack 설정 커스터마이징 부분

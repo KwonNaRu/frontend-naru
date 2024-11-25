@@ -7,7 +7,7 @@ import { PostFormInputs } from "@/types/post";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postSchema } from "@/validationSchemas";
-import Alert from "../Alert/Alert";
+import Alert from "@/components/Alert/Alert";
 import { useAppSelector } from "@/store/hooks";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";

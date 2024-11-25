@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "@/validationSchemas";
 import axios from "@/configs/axiosConfig";
-import Alert from "../Alert/Alert";
+import Alert from "@/components/Alert/Alert";
 
 interface CategoryFormType {
     categoryFormInputs: CategoryFormInputs;

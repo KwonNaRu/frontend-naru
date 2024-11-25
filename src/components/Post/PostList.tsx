@@ -3,7 +3,7 @@
 
 import React from "react";
 import Carousel from "@/components/Common/Carousel";
-import PostCard from "../Post/PostCard";
+import PostCard from "@/components/Post/PostCard";
 import { PostProps } from "@/types/post";
 import styles from "./PostList.module.scss";
 

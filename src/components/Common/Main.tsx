@@ -3,12 +3,12 @@
 
 import React, { useEffect, useState } from "react";
 import styles from "./Main.module.scss";
-import Modal from "../Common/Modal";
+import Modal from "@/components/Common/Modal";
 import CategoryEditor from "@/components/Category/CategoryEditor";
-import PostEditor from "../Post/PostEditor";
+import PostEditor from "@/components/Post/PostEditor";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import CategoryList from "@/components/Category/CategoryList";
-import PostList from "../Post/PostList";
+import PostList from "@/components/Post/PostList";
 import axiosInstance from "@/configs/axiosConfig";
 import { setPost, setPostList } from "@/store/postSlice";
 

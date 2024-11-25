@@ -1,4 +1,4 @@
-@use "./../abstracts" as *;
+@use "@/styles/abstracts" as *;
 
 // 폼 스타일
 @mixin form-style($primary-color, $secondary-color, $error-color, $background-color, $form-background, $input-border, $input-focus-border) {

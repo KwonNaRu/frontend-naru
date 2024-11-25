@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./Category.module.scss";
 import { CategoryProps } from "@/types/post";
 import { useAppSelector } from "@/store/hooks";
-import PostList from "../Post/PostList";
+import PostList from "@/components/Post/PostList";
 
 const Category: React.FC<CategoryProps> = (category) => {
     const { user } = useAppSelector((state) => state.auth);
