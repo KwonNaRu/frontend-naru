@@ -3,6 +3,9 @@ import path from 'path'
 
 const nextConfig: NextConfig = {
   /* config options here */
+  images: {
+    unoptimized: true,
+  },
   webpack: (config) => {
     // Webpack 설정 커스터마이징 부분
     // config.module.rules.push({
