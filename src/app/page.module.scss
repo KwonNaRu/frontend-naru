@@ -11,6 +11,8 @@ $footer-background: $light-gray;
 $footer-text-color: $charcoal;
 
 .landing-container {
+    display: flex;
+    flex-direction: column;
     text-align: center;
     color: $text-color;
     background: $background-color;
