@@ -1,33 +1,29 @@
 "use client";
 
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import Cookies from "js-cookie"; // js-cookie 라이브러리 사용 권장
-import { signIn, signOut } from "@/store/authSlice";
-import { decodeToken } from "react-jwt";
+import { signIn } from "@/store/authSlice";
+import axiosInstance from "@/configs/axiosConfig";
+import { useAppDispatch } from "@/store/hooks";
 
 export default function AuthChecker() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const nidAuthCookie = Cookies.get("NID_AUTH");
-
-        if (nidAuthCookie) {
-            const decodedToken = decodeToken(nidAuthCookie) as GlobalDecodedJwtToken;
-
-            // 필요한 정보 추출
-            const email = decodedToken.sub;
-            const username = decodedToken.username;
-            const role = decodedToken.role;
-
-            // 쿠키 존재 시 인증 상태로 설정
-            dispatch(
-                signIn({ username, email, role }) // 필요시 추가 사용자 정보
-            );
-        } else {
-            // 쿠키 없을 경우 비인증 상태
-            dispatch(signOut());
-        }
+        // 서버에 인증 상태 확인 요청
+        axiosInstance
+            .get("/auth/status")
+            .then((response) => {
+                const userInfo = response.data;
+                dispatch(signIn(userInfo));
+            })
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    axiosInstance.post("/auth/refresh").then((response) => {
+                        const userInfo = response.data;
+                        dispatch(signIn(userInfo));
+                    });
+                }
+            });
     }, [dispatch]);
 
     return null; // 렌더링할 내용 없음

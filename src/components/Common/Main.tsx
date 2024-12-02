@@ -67,7 +67,7 @@ const Main: React.FC = () => {
             <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
             <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ onClose: () => setPostModalOpen(false) }} />
 
-            {user?.role === "OWNER" ? (
+            {user?.role.includes("OWNER") ? (
                 <div className={styles["main-btn-container"]}>
                     <button type="button" onClick={() => handleCategoryOpenModal()} className={styles["category-add-btn"]}>
                         카테고리 추가

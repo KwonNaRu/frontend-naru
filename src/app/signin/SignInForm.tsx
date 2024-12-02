@@ -8,8 +8,6 @@ import { loginSchema } from "@/validationSchemas"; // 로그인용 유효성 검
 import { useAppDispatch } from "@/store/hooks";
 import { signIn } from "@/store/authSlice"; // login action 가져오기
 import styles from "./signin.module.scss";
-import { decodeToken } from "react-jwt";
-import Cookies from "js-cookie";
 import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/configs/axiosConfig";
@@ -41,20 +39,10 @@ const SignInForm: React.FC = () => {
         try {
             // 서버에 로그인 정보 전송
             const response = await axiosInstance.post("/auth/login", data);
-            const token = response.data;
-
-            const decodedToken = decodeToken(token) as GlobalDecodedJwtToken;
-
-            // 필요한 정보 추출
-            const email = decodedToken.sub;
-            const username = decodedToken.username;
-            const exp = decodedToken.exp * 1000;
-            const role = decodedToken.role;
-
-            Cookies.set("NID_AUTH", token, { expires: exp });
+            const userInfo = response.data;
 
             // 로그인 성공 시 Redux 상태 업데이트
-            dispatch(signIn({ username, email, role }));
+            dispatch(signIn(userInfo));
             router.push("/");
         } catch (error) {
             console.error(error); // 에러 발생 시 로그
