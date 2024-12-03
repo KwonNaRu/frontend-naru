@@ -8,11 +8,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postSchema } from "@/validationSchemas";
 import Alert from "@/components/Alert/Alert";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { throttle } from "lodash";
 import { computedCategoryListWithoutPosts } from "@/store/categorySlice";
+import { setPost } from "@/store/postSlice";
 
 interface PostFormType {
     onClose: () => void;
@@ -42,6 +43,8 @@ const PostEditor: React.FC<PostFormType> = () => {
 
     const client = useRef<Client | null>(null);
 
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         try {
             // SockJS와 STOMP 클라이언트를 사용해 WebSocket 연결 설정
@@ -57,7 +60,8 @@ const PostEditor: React.FC<PostFormType> = () => {
 
                 // /topic/posts 경로에 구독 설정
                 client.current?.subscribe("/topic/posts", (message: any) => {
-                    console.log("Received message: ", message.body);
+                    const { id, author, title, content, categoryId, comments } = JSON.parse(message.body);
+                    dispatch(setPost({ id, author, title, content, categoryId, comments }));
                 });
             };
 
@@ -102,7 +106,7 @@ const PostEditor: React.FC<PostFormType> = () => {
                     setErrorMessage("게시글 전송에 실패했습니다.");
                     setShowError(true);
                 }
-            }, 1000), // 1초 쓰로틀링
+            }, 2000), // 1초 쓰로틀링
         [post?.id]
     );
 
@@ -120,29 +124,6 @@ const PostEditor: React.FC<PostFormType> = () => {
             throttledPublish.cancel(); // 쓰로틀 취소
         };
     }, [watch, throttledPublish, STORAGE_KEY]);
-
-    // 입력값 변화 감지
-    useEffect(() => {
-        const subscription = watch((data) => {
-            try {
-                client.current?.publish({
-                    destination: "/app/post",
-                    body: JSON.stringify({
-                        id: post?.id,
-                        title: data.title,
-                        content: data.content,
-                        categoryId: data.categoryId,
-                    }),
-                });
-            } catch (error) {
-                console.error(error);
-                setErrorMessage("게시글 전송에 실패했습니다.");
-                setShowError(true);
-            }
-        });
-
-        return () => subscription.unsubscribe();
-    }, [watch, post?.id]);
 
     // 컴포넌트 언마운트 시 로컬스토리지 데이터 publish
     useEffect(() => {
@@ -185,7 +166,7 @@ const PostEditor: React.FC<PostFormType> = () => {
                             ))}
                         </select>
                     ) : (
-                        <span>{post?.categoryId}</span>
+                        <span>{categoriesWithoutPosts.find((category) => category.id === post?.categoryId)?.name}</span>
                     )}
                 </div>
                 <div>
