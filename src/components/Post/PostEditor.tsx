@@ -11,7 +11,6 @@ import Alert from "@/components/Alert/Alert";
 import { useAppSelector } from "@/store/hooks";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import Cookies from "js-cookie";
 import { throttle } from "lodash";
 import { computedCategoryListWithoutPosts } from "@/store/categorySlice";
 
@@ -39,7 +38,7 @@ const PostEditor: React.FC<PostFormType> = () => {
 
     const { user } = useAppSelector((state) => state.auth);
 
-    const isEditable = useMemo(() => user?.role === "OWNER", [user]);
+    const isEditable = useMemo(() => user?.role.includes("OWNER"), [user]);
 
     const client = useRef<Client | null>(null);
 
@@ -52,10 +51,6 @@ const PostEditor: React.FC<PostFormType> = () => {
                 heartbeatIncoming: 4000,
                 heartbeatOutgoing: 4000,
             });
-
-            client.current.connectHeaders = {
-                Authorization: `Bearer ${Cookies.get("NID_AUTH")}`,
-            };
 
             client.current.onConnect = (frame: any) => {
                 console.log("Connected: " + frame);
