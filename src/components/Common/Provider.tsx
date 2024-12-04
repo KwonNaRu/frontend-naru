@@ -24,12 +24,13 @@ export default function Providers({
 
     return (
         <Provider store={store}>
-            <AuthChecker />
-            {/* <NavigationWrapper> */}
-            <PersistGate loading={<Loading />} persistor={persistor}>
-                {children}
-            </PersistGate>
-            {/* </NavigationWrapper> */}
+            <AuthChecker>
+                {/* <NavigationWrapper> */}
+                <PersistGate loading={<Loading />} persistor={persistor}>
+                    {children}
+                </PersistGate>
+                {/* </NavigationWrapper> */}
+            </AuthChecker>
         </Provider>
     );
 }

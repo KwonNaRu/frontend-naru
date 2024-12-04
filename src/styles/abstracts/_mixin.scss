@@ -10,6 +10,7 @@
     border-radius: 5px;
     transition: box-shadow 0.3s;
     border: none;
+    white-space: nowrap;
 
     &:hover {
         box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);

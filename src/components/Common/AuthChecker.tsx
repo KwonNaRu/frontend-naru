@@ -6,7 +6,7 @@ import axiosInstance from "@/configs/axiosConfig";
 import { useAppDispatch } from "@/store/hooks";
 import Loading from "./Loading";
 
-export default function AuthChecker() {
+export default function AuthChecker({ children }: { children: React.ReactNode }) {
     const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(true);
 
@@ -31,5 +31,5 @@ export default function AuthChecker() {
             });
     }, [dispatch]);
 
-    return isLoading ? <Loading /> : null; // 렌더링할 내용 없음
+    return isLoading ? <Loading /> : children;
 }
