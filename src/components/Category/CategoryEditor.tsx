@@ -10,12 +10,7 @@ import axios from "@/configs/axiosConfig";
 import { hideAlert, showAlert } from "@/store/commonSlice";
 import { useAppDispatch } from "@/store/hooks";
 
-interface CategoryFormType {
-    categoryFormInputs: CategoryFormInputs;
-    onClose: () => void;
-}
-
-const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
+const CategoryEditor = ({ onClose }: { onClose: () => void }) => {
     const {
         register,
         handleSubmit,

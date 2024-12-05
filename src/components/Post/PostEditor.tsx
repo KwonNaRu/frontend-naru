@@ -15,11 +15,7 @@ import { computedCategoryListWithoutPosts } from "@/store/categorySlice";
 import { setPost } from "@/store/postSlice";
 import { showAlert } from "@/store/commonSlice";
 
-interface PostFormType {
-    onClose: () => void;
-}
-
-const PostEditor: React.FC<PostFormType> = () => {
+const PostEditor = () => {
     const { post } = useAppSelector((state) => state.post);
 
     const { register, watch } = useForm({

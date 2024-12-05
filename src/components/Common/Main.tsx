@@ -3,19 +3,18 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Main.module.scss";
 import Modal from "@/components/Common/Modal";
-import CategoryEditor from "@/components/Category/CategoryEditor";
 import PostEditor from "@/components/Post/PostEditor";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import CategoryList from "@/components/Category/CategoryList";
 import PostList from "@/components/Post/PostList";
 import axiosInstance from "@/configs/axiosConfig";
 import { setPost, setPostList } from "@/store/postSlice";
+import CategoryEditor from "../Category/CategoryEditor";
 
 const Main: React.FC = () => {
     const { user } = useAppSelector((state) => state.auth);
 
-    const [isCategoryModalOpen, setCategoryModalOpen] = useState(false);
-    const [isPostModalOpen, setPostModalOpen] = useState(false);
+    const [modalComponent, setModalComponent] = useState<React.ReactNode>(null);
 
     const dispatch = useAppDispatch();
 
@@ -28,11 +27,7 @@ const Main: React.FC = () => {
     }, [post]);
 
     const handleCategoryOpenModal = () => {
-        setCategoryModalOpen(true);
-    };
-
-    const handleCategoryCloseModal = () => {
-        setCategoryModalOpen(false);
+        setModalComponent(<CategoryEditor onClose={handleCloseModal} />);
     };
 
     const createPost = async () => {
@@ -48,11 +43,11 @@ const Main: React.FC = () => {
     };
 
     const handlePostOpenModal = () => {
-        setPostModalOpen(true);
+        setModalComponent(<PostEditor />);
     };
 
-    const handlePostCloseModal = () => {
-        setPostModalOpen(false);
+    const handleCloseModal = () => {
+        setModalComponent(null);
     };
 
     const { postList } = useAppSelector((state) => state.post);
@@ -64,8 +59,7 @@ const Main: React.FC = () => {
 
     return (
         <main className={styles["landing-main"]}>
-            <Modal isOpen={isCategoryModalOpen} onClose={handleCategoryCloseModal} Component={CategoryEditor} componentProps={{ categoryFormInputs: { name: "" }, onClose: () => setCategoryModalOpen(false) }} />
-            <Modal isOpen={isPostModalOpen} onClose={handlePostCloseModal} Component={PostEditor} componentProps={{ onClose: () => setPostModalOpen(false) }} />
+            <Modal onClose={handleCloseModal}>{modalComponent}</Modal>
 
             {user?.role.includes("OWNER") ? (
                 <div className={styles["main-btn-container"]}>
