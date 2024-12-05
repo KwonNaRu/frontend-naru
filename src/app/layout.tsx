@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Naru's Blog",
         description: "Welcome to Naru's blog where interesting posts await you.",
-        url: "https://example.com", // TODO: replace with your site URL
+        url: "https://mixed-naru.vercel.app",
         images: [
             {
                 url: "/images/favicon.ico",
