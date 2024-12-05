@@ -1,34 +1,34 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import styles from "./Alert.module.scss";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { hideAlert } from "@/store/commonSlice";
 
-interface AlertProps {
-    message: string;
-    type?: "error" | "success" | "warning" | "info";
-    onClose?: () => void;
-}
-
-const Alert: React.FC<AlertProps> = ({ message, type = "error", onClose }) => {
+const Alert: React.FC = () => {
     const [isHovered, setIsHovered] = useState(false);
+    const dispatch = useAppDispatch();
+    const { alert } = useAppSelector((state) => state.common);
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
 
-        if (!isHovered) {
+        if (alert.show && !isHovered) {
             timer = setTimeout(() => {
-                onClose?.();
+                dispatch(hideAlert());
             }, 5000);
         }
 
         return () => {
             if (timer) clearTimeout(timer);
         };
-    }, [isHovered, onClose]);
+    }, [isHovered, alert.show]);
 
-    return (
-        <div className={`${styles["alert-message"]} ${styles[type]}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-            {message}
+    return alert.show ? (
+        <div className={`${styles["alert-message"]} ${styles[alert.type]}`} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+            {alert.message}
         </div>
-    );
+    ) : null;
 };
 
 export default Alert;

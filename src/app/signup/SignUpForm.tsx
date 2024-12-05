@@ -1,15 +1,14 @@
 // components/SignUpForm.tsx
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signupSchema } from "@/validationSchemas";
 import axios from "@/configs/axiosConfig";
 import styles from "./signup.module.scss";
-import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
-import { setIsLoading } from "@/store/commonSlice";
+import { hideAlert, setIsLoading, showAlert } from "@/store/commonSlice";
 import { useAppDispatch } from "@/store/hooks";
 
 interface SignUpFormInputs {
@@ -29,28 +28,23 @@ const SignUpForm: React.FC = () => {
         resolver: yupResolver(signupSchema),
     });
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showError, setShowError] = useState(false);
-
     const router = useRouter();
 
     const onSubmit = async (data: SignUpFormInputs) => {
         try {
+            dispatch(hideAlert());
             dispatch(setIsLoading(true));
-            setErrorMessage("");
-            setShowError(false);
             await axios.post("/auth/register", data);
+            dispatch(showAlert({ message: "회원가입이 완료되었습니다. 이메일 인증을 진행 후 로그인 해주세요.", type: "success", show: true }));
             router.push("/signin");
         } catch (error) {
-            setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
-            setShowError(true);
+            dispatch(showAlert({ message: "회원가입에 실패했습니다. 다시 시도해 주세요.", type: "error", show: true }));
             console.error(error);
         }
     };
 
     return (
         <>
-            {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
             <form className={styles["sign-form"]} onSubmit={handleSubmit(onSubmit)}>
                 <h2>Sign Up</h2>
 

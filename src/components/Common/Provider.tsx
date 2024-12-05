@@ -8,6 +8,8 @@ import AuthChecker from "./AuthChecker";
 import Loading from "../Loading/Loading";
 import PuppyLoader from "../Loading/PuppyLoader";
 import { injectStore } from "@/configs/axiosConfig";
+import Alert from "../Alert/Alert";
+
 injectStore(store);
 
 export default function Providers({
@@ -28,6 +30,7 @@ export default function Providers({
     return (
         <Provider store={store}>
             <PuppyLoader />
+            <Alert />
             <AuthChecker>
                 {/* <NavigationWrapper> */}
                 <PersistGate loading={<Loading />} persistor={persistor}>

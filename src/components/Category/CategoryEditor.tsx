@@ -1,13 +1,14 @@
 // components/Category.tsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "./Category.module.scss";
 import { CategoryFormInputs } from "@/types/post";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "@/validationSchemas";
 import axios from "@/configs/axiosConfig";
-import Alert from "@/components/Alert/Alert";
+import { hideAlert, showAlert } from "@/store/commonSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 interface CategoryFormType {
     categoryFormInputs: CategoryFormInputs;
@@ -24,19 +25,16 @@ const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
         resolver: yupResolver(categorySchema),
     });
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showError, setShowError] = useState(false);
+    const dispatch = useAppDispatch();
 
     const onSubmit = async (data: CategoryFormInputs) => {
         try {
-            setErrorMessage("");
-            setShowError(false);
+            dispatch(hideAlert());
             const response = await axios.post("/categories", data);
             console.log(response.data); // 서버 응답 로그
             onClose();
         } catch (error) {
-            setErrorMessage("카테고리 생성에 실패했습니다. 다시 시도해 주세요.");
-            setShowError(true);
+            dispatch(showAlert({ message: "카테고리 생성에 실패했습니다. 다시 시도해 주세요.", type: "error", show: true }));
             console.error(error);
         }
     };
@@ -49,7 +47,6 @@ const CategoryEditor: React.FC<CategoryFormType> = ({ onClose }) => {
 
     return (
         <>
-            {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <input type="text" id="name" {...register("name")} className={styles["category-name__input"]} />
                 {errors.name && <p className={styles["error-message"]}>{errors.name.message}</p>}

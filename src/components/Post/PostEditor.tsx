@@ -1,19 +1,19 @@
 // components/post.tsx
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import styles from "./PostEditor.module.scss";
 import { PostFormInputs } from "@/types/post";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postSchema } from "@/validationSchemas";
-import Alert from "@/components/Alert/Alert";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import { throttle } from "lodash";
 import { computedCategoryListWithoutPosts } from "@/store/categorySlice";
 import { setPost } from "@/store/postSlice";
+import { showAlert } from "@/store/commonSlice";
 
 interface PostFormType {
     onClose: () => void;
@@ -33,9 +33,6 @@ const PostEditor: React.FC<PostFormType> = () => {
     });
 
     const categoriesWithoutPosts = useAppSelector(computedCategoryListWithoutPosts);
-
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showError, setShowError] = useState(false);
 
     const { user } = useAppSelector((state) => state.auth);
 
@@ -68,7 +65,7 @@ const PostEditor: React.FC<PostFormType> = () => {
             client.current!.onStompError = (frame: any) => {
                 console.error("Broker reported error: " + frame.headers["message"]);
                 console.error("Additional details: " + frame.body);
-                setErrorMessage("게시글 수정에 실패했습니다. 다시 시도해 주세요.");
+                dispatch(showAlert({ message: "게시글 수정에 실패했습니다. 다시 시도해 주세요.", type: "error", show: true }));
             };
 
             client.current?.activate(); // STOMP 클라이언트 활성화
@@ -103,8 +100,7 @@ const PostEditor: React.FC<PostFormType> = () => {
                     localStorage.removeItem(STORAGE_KEY);
                 } catch (error) {
                     console.error(error);
-                    setErrorMessage("게시글 전송에 실패했습니다.");
-                    setShowError(true);
+                    dispatch(showAlert({ message: "게시글 전송에 실패했습니다.", type: "error", show: true }));
                 }
             }, 2000), // 1초 쓰로틀링
         [post?.id]
@@ -138,8 +134,7 @@ const PostEditor: React.FC<PostFormType> = () => {
                     localStorage.removeItem(STORAGE_KEY);
                 } catch (error) {
                     console.error(error);
-                    setErrorMessage("게시글 전송에 실패했습니다.");
-                    setShowError(true);
+                    dispatch(showAlert({ message: "게시글 전송에 실패했습니다.", type: "error", show: true }));
                 }
             }
             client.current?.deactivate();
@@ -148,7 +143,6 @@ const PostEditor: React.FC<PostFormType> = () => {
 
     return (
         <>
-            {showError && errorMessage && <Alert message={errorMessage} type="error" onClose={() => setShowError(false)} />}
             <form className={styles["post-edit__form"]}>
                 <div>
                     <label htmlFor="title">제목</label>
