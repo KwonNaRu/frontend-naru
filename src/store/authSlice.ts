@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import Cookies from "js-cookie";
 
 // 로그인, 회원가입 상태의 초기값 정의
 interface AuthState {
@@ -27,7 +26,6 @@ const authSlice = createSlice({
         signOut: (state) => {
             state.isAuthenticated = false // 로그아웃 처리
             state.user = null // 사용자 정보 초기화
-            Cookies.remove('NID_AUTH')
         },
     },
 })

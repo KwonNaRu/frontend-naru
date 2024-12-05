@@ -5,7 +5,10 @@ import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/store";
 import { useEffect } from "react";
 import AuthChecker from "./AuthChecker";
-import Loading from "./Loading";
+import Loading from "../Loading/Loading";
+import PuppyLoader from "../Loading/PuppyLoader";
+import { injectStore } from "@/configs/axiosConfig";
+injectStore(store);
 
 export default function Providers({
     children,
@@ -24,6 +27,7 @@ export default function Providers({
 
     return (
         <Provider store={store}>
+            <PuppyLoader />
             <AuthChecker>
                 {/* <NavigationWrapper> */}
                 <PersistGate loading={<Loading />} persistor={persistor}>

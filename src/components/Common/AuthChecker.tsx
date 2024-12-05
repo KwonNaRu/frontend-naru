@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { signIn } from "@/store/authSlice";
 import axiosInstance from "@/configs/axiosConfig";
 import { useAppDispatch } from "@/store/hooks";
-import Loading from "./Loading";
+import Loading from "../Loading/Loading";
 
 export default function AuthChecker({ children }: { children: React.ReactNode }) {
     const dispatch = useAppDispatch();

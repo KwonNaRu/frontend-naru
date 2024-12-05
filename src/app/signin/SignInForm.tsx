@@ -11,6 +11,7 @@ import styles from "./signin.module.scss";
 import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
 import axiosInstance from "@/configs/axiosConfig";
+import { setIsLoading } from "@/store/commonSlice";
 
 // 로그인 폼에 입력될 데이터의 타입 정의
 interface LoginFormInputs {
@@ -35,14 +36,14 @@ const SignInForm: React.FC = () => {
     const router = useRouter();
 
     // 폼 제출 시 실행될 함수
-    const onSubmit = async (data: LoginFormInputs) => {
+    const onSubmit = async (loginData: LoginFormInputs) => {
         try {
+            dispatch(setIsLoading(true));
             // 서버에 로그인 정보 전송
-            const response = await axiosInstance.post("/auth/login", data);
-            const userInfo = response.data;
+            const { data } = await axiosInstance.post("/auth/login", loginData);
 
             // 로그인 성공 시 Redux 상태 업데이트
-            dispatch(signIn(userInfo));
+            dispatch(signIn(data));
             router.push("/");
         } catch (error) {
             console.error(error); // 에러 발생 시 로그

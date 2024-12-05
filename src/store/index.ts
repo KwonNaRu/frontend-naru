@@ -4,6 +4,8 @@ import storage from 'redux-persist/lib/storage'; // localStorage를 사용하기
 import authReducer from './authSlice'
 import postReducer from './postSlice'
 import categoryReducer from './categorySlice'
+import commonReducer from './commonSlice'
+
 // Redux Persist 설정
 // - key: localStorage에 저장될 때 사용될 키 이름
 // - storage: 실제 저장소 (localStorage)
@@ -17,6 +19,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     post: postReducer,
     category: categoryReducer,
+    common: commonReducer,
 });
 
 

@@ -1,4 +1,11 @@
 import axios from 'axios'
+import { Store } from '@reduxjs/toolkit'
+
+let store: Store | null = null;
+
+export const injectStore = (_store: Store) => {
+    store = _store;
+}
 
 const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -19,10 +26,12 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
     (response) => {
+        (store as Store).dispatch({ type: 'common/setIsLoading', payload: false });
         return response
     },
     (error) => {
         // if (error.response.status === 401) {}
+        (store as Store).dispatch({ type: 'common/setIsLoading', payload: false });
         return Promise.reject(error);
     }
 )

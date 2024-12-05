@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import NavigationLoading from "@/components/Common/Loading";
+import NavigationLoading from "@/components/Loading/Loading";
 
 export default function NavigationWrapper({ children }: { children: React.ReactNode }) {
     const [loading, setLoading] = useState(false);

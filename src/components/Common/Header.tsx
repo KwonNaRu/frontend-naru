@@ -4,13 +4,21 @@ import styles from "./Header.module.scss";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signOut } from "@/store/authSlice";
+import axiosInstance from "@/configs/axiosConfig";
 
 const Header: React.FC = () => {
     const dispatch = useAppDispatch();
     const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
     function onSignOut() {
-        dispatch(signOut());
+        axiosInstance
+            .post("/auth/logout", { email: user?.email })
+            .then(() => {
+                dispatch(signOut());
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     return (

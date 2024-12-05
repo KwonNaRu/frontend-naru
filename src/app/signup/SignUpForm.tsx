@@ -9,6 +9,8 @@ import axios from "@/configs/axiosConfig";
 import styles from "./signup.module.scss";
 import Alert from "@/components/Alert/Alert";
 import { useRouter } from "next/navigation";
+import { setIsLoading } from "@/store/commonSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 interface SignUpFormInputs {
     username: string;
@@ -17,6 +19,8 @@ interface SignUpFormInputs {
 }
 
 const SignUpForm: React.FC = () => {
+    const dispatch = useAppDispatch();
+
     const {
         register,
         handleSubmit,
@@ -32,10 +36,10 @@ const SignUpForm: React.FC = () => {
 
     const onSubmit = async (data: SignUpFormInputs) => {
         try {
+            dispatch(setIsLoading(true));
             setErrorMessage("");
             setShowError(false);
-            const response = await axios.post("/auth/register", data);
-            console.log(response.data); // 서버 응답 로그
+            await axios.post("/auth/register", data);
             router.push("/signin");
         } catch (error) {
             setErrorMessage("회원가입에 실패했습니다. 다시 시도해 주세요.");
