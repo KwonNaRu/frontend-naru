@@ -57,6 +57,60 @@ const Main: React.FC = () => {
         });
     }, []);
 
+    const [subscriptionData, setSubscriptionData] = useState(null);
+
+    useEffect(() => {
+        // WebSocket 초기화
+        const ws = new WebSocket("ws://localhost:8080/subscriptions");
+
+        ws.onopen = () => {
+            console.log("WebSocket connected");
+
+            // 구독 시작 메시지 보내기
+            ws.send(
+                JSON.stringify({
+                    type: "start",
+                    id: "1",
+                    payload: {
+                        query: `
+                            subscription {
+                                postCreated {
+                                    id
+                                    title
+                                    content
+                                    category {
+                                        id
+                                        name
+                                    }
+                                }
+                            }
+                        `,
+                    },
+                })
+            );
+        };
+
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log("Received message:", message);
+
+            if (message.type === "data" && message.payload) {
+                setSubscriptionData(message.payload.data.postCreated);
+            }
+        };
+
+        ws.onclose = () => {
+            console.log("WebSocket disconnected");
+        };
+
+        ws.onerror = (error) => {
+            console.error("WebSocket error:", error);
+        };
+
+        // WebSocket 종료 처리
+        return () => ws.close();
+    }, []);
+
     return (
         <main className={styles["landing-main"]}>
             <Modal onClose={handleCloseModal}>{modalComponent}</Modal>
