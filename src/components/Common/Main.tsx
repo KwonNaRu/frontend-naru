@@ -1,15 +1,19 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import styles from "./Main.module.scss";
+import CategoryList from "@/components/Category/CategoryList";
 import Modal from "@/components/Common/Modal";
 import PostEditor from "@/components/Post/PostEditor";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import CategoryList from "@/components/Category/CategoryList";
 import PostList from "@/components/Post/PostList";
 import axiosInstance from "@/configs/axiosConfig";
+import { setCategoryList } from "@/store/categorySlice";
+import { showAlert } from "@/store/commonSlice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setPost, setPostList } from "@/store/postSlice";
+import { Client } from "@stomp/stompjs";
+import React, { useEffect, useRef, useState } from "react";
+import SockJS from "sockjs-client";
 import CategoryEditor from "../Category/CategoryEditor";
+import styles from "./Main.module.scss";
 
 const Main: React.FC = () => {
     const { user } = useAppSelector((state) => state.auth);
@@ -27,7 +31,7 @@ const Main: React.FC = () => {
     }, [post]);
 
     const handleCategoryOpenModal = () => {
-        setModalComponent(<CategoryEditor onClose={handleCloseModal} />);
+        setModalComponent(<CategoryEditor onClose={handleCloseModal} createCategory={createCategory} />);
     };
 
     const createPost = async () => {
@@ -51,65 +55,59 @@ const Main: React.FC = () => {
     };
 
     const { postList } = useAppSelector((state) => state.post);
+
     useEffect(() => {
         axiosInstance.get("/posts").then((response) => {
             dispatch(setPostList(response.data));
         });
-    }, []);
+    }, [dispatch]);
 
-    const [subscriptionData, setSubscriptionData] = useState(null);
+    const { categoryList } = useAppSelector((state) => state.category);
+
+    const client = useRef<Client | null>(null);
 
     useEffect(() => {
-        // WebSocket 초기화
-        const ws = new WebSocket("ws://localhost:8080/subscriptions");
+        try {
+            // SockJS와 STOMP 클라이언트를 사용해 WebSocket 연결 설정
+            client.current = new Client({
+                webSocketFactory: () => new SockJS(`${process.env.NEXT_PUBLIC_API_URL}/subscriptions`), // 인스턴스 생성 시점 변경
+                reconnectDelay: 5000, // 연결 실패 시 5초 후 재시도
+                heartbeatIncoming: 4000,
+                heartbeatOutgoing: 4000,
+            });
 
-        ws.onopen = () => {
-            console.log("WebSocket connected");
+            client.current.onConnect = (frame: any) => {
+                console.log("Connected: " + frame);
 
-            // 구독 시작 메시지 보내기
-            ws.send(
-                JSON.stringify({
-                    type: "start",
-                    id: "1",
-                    payload: {
-                        query: `
-                            subscription {
-                                postCreated {
-                                    id
-                                    title
-                                    content
-                                    category {
-                                        id
-                                        name
-                                    }
-                                }
-                            }
-                        `,
-                    },
-                })
-            );
-        };
+                // /topic/posts 경로에 구독 설정
+                client.current?.subscribe("/topic/create/category", (message: any) => {
+                    dispatch(setCategoryList([JSON.parse(message.body), ...categoryList]));
+                });
+            };
 
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            console.log("Received message:", message);
+            client.current!.onStompError = (frame: any) => {
+                console.error("Broker reported error: " + frame.headers["message"]);
+                console.error("Additional details: " + frame.body);
+                dispatch(showAlert({ message: "게시글 수정에 실패했습니다. 다시 시도해 주세요.", type: "error", show: true }));
+            };
 
-            if (message.type === "data" && message.payload) {
-                setSubscriptionData(message.payload.data.postCreated);
-            }
-        };
+            client.current?.activate(); // STOMP 클라이언트 활성화
 
-        ws.onclose = () => {
-            console.log("WebSocket disconnected");
-        };
+            return () => {
+                // 컴포넌트 언마운트 시 연결 해제
+                client.current?.deactivate();
+            };
+        } catch (error) {
+            console.error(error);
+        }
+    }, [dispatch, categoryList]);
 
-        ws.onerror = (error) => {
-            console.error("WebSocket error:", error);
-        };
-
-        // WebSocket 종료 처리
-        return () => ws.close();
-    }, []);
+    function createCategory(data: any) {
+        client.current?.publish({
+            destination: "/app/category",
+            body: JSON.stringify({ ...data }),
+        });
+    }
 
     return (
         <main className={styles["landing-main"]}>
@@ -127,7 +125,6 @@ const Main: React.FC = () => {
             ) : null}
 
             <PostList postList={postList} />
-
             <CategoryList />
         </main>
     );

@@ -1,16 +1,15 @@
 // components/Category.tsx
 
-import React, { useEffect } from "react";
-import styles from "./Category.module.scss";
 import { CategoryFormInputs } from "@/types/post";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { categorySchema } from "@/validationSchemas";
-import axios from "@/configs/axiosConfig";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import styles from "./Category.module.scss";
 import { hideAlert, showAlert } from "@/store/commonSlice";
 import { useAppDispatch } from "@/store/hooks";
 
-const CategoryEditor = ({ onClose }: { onClose: () => void }) => {
+const CategoryEditor = ({ onClose, createCategory }: { onClose: () => void; createCategory: (data: CategoryFormInputs) => void }) => {
     const {
         register,
         handleSubmit,
@@ -25,8 +24,7 @@ const CategoryEditor = ({ onClose }: { onClose: () => void }) => {
     const onSubmit = async (data: CategoryFormInputs) => {
         try {
             dispatch(hideAlert());
-            const response = await axios.post("/categories", data);
-            console.log(response.data); // 서버 응답 로그
+            createCategory(data);
             onClose();
         } catch (error) {
             dispatch(showAlert({ message: "카테고리 생성에 실패했습니다. 다시 시도해 주세요.", type: "error", show: true }));

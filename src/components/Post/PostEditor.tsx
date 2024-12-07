@@ -42,7 +42,7 @@ const PostEditor = () => {
         try {
             // SockJS와 STOMP 클라이언트를 사용해 WebSocket 연결 설정
             client.current = new Client({
-                webSocketFactory: () => new SockJS("http://localhost:8080/ws"), // 인스턴스 생성 시점 변경
+                webSocketFactory: () => new SockJS(`${process.env.NEXT_PUBLIC_API_URL}/ws`), // 인스턴스 생성 시점 변경
                 reconnectDelay: 5000, // 연결 실패 시 5초 후 재시도
                 heartbeatIncoming: 4000,
                 heartbeatOutgoing: 4000,
@@ -73,7 +73,7 @@ const PostEditor = () => {
         } catch (error) {
             console.error(error);
         }
-    }, []);
+    }, [dispatch]);
 
     // 로컬스토리지 키 설정
     const STORAGE_KEY = `post_draft_${post?.id}`;

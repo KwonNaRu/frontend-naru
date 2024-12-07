@@ -7,7 +7,7 @@ const initialState = {
 }
 
 const categorySlice = createSlice({
-    name: "post",
+    name: "category",
     initialState,
     reducers: {
         setCategoryList: (
