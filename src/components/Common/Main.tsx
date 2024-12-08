@@ -36,11 +36,9 @@ const Main: React.FC = () => {
 
     const createPost = async () => {
         try {
-            const response = await axiosInstance.post("/posts");
-            const { id, username, title, content, categoryId, comments } = response.data;
-            dispatch(setPost({ id, author: username, title, content, categoryId, comments }));
-
-            handlePostOpenModal();
+            client.current?.publish({
+                destination: "/app/create/post",
+            });
         } catch (error) {
             console.error(error);
         }
@@ -82,6 +80,13 @@ const Main: React.FC = () => {
                 // /topic/posts 경로에 구독 설정
                 client.current?.subscribe("/topic/create/category", (message: any) => {
                     dispatch(setCategoryList([JSON.parse(message.body), ...categoryList]));
+                });
+
+                client.current?.subscribe("/topic/create/post", (message: any) => {
+                    const { id, username, title, content, categoryId, comments } = JSON.parse(message.body);
+                    dispatch(setPostList([JSON.parse(message.body), ...postList]));
+                    setPost({ id, author: username, title, content, categoryId, comments });
+                    handlePostOpenModal();
                 });
             };
 
